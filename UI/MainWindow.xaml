@@ -1,0 +1,32 @@
+﻿<Window x:Class="UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UI"
+        mc:Ignorable="d"
+        Title="Upload" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Source File" Margin="5"/>
+        <Button Grid.Row="0" Grid.Column="1" Content="Open zip file" Margin="5" Click="OpenZipFileButton_Click" Name="SourceFileButton"/>
+        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Name="SourceFileTextBox" IsEnabled="False"/>
+        <ListBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" MinHeight="5" Name="ZipFileListBox" IsEnabled="False"/>
+        <Label Grid.Row="3" Grid.Column="0" Content="Destination Folder" Margin="5"/>
+        <Button Grid.Row="3" Grid.Column="1" Content="Open destination folder" Margin="5" Click="OpenDestinationButton_Click" Name="DestinationFolder_Button_Click"/>
+        <TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Name="DestinationFolderTextBox" IsEnabled="False"/>
+        <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="Excecute" Margin="5" Click="ExcecuteButton_Click" Name="ExcecuteButton" />
+    </Grid>
+</Window>
