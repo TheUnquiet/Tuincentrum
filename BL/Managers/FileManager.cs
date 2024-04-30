@@ -12,14 +12,18 @@ namespace BL.Managers
     public class FileManager
     {
         private IFileProcessor processor;
-        private const string productsFile = "producten.txt";
-        private const string klantenFile = "/klanten.txt";
-        private const string offertesFile = "offertes.txt";
-        private const string offerte_productenFile = "offerte_producten.txt";
+
+        private List<string> files = new List<string>()
+        {
+            @"producten.txt",
+            @"klanten.txt",
+            @"offertes.txt",
+            @"offerte_producten.txt"
+        };
 
         public FileManager(IFileProcessor processor)
         {
-            this.processor = processor;
+            this.processor = processor; 
         }
 
         public List<string> GetFilesFromZip(string zipFilename)
@@ -46,25 +50,11 @@ namespace BL.Managers
 
         public void ProcessZip(string zipFileName, string destinationFolder)
         {
-            List<string> messages = new List<string>();
+            
             processor.Unzip(zipFileName, destinationFolder);
             //List<string> klanten = LeesKlanten();
         }
 
-        public List<Klant> MaakKlanten(string prefix)
-        {
-            List<Klant> klantenLijst = new List<Klant>();
-            List<string> klantenLijstFile = processor.ReadFile(prefix + klantenFile);
 
-            foreach (string line in klantenLijstFile)
-            {
-                string[] strings = line.Split('|');
-
-                Klant klant = new Klant(int.Parse(strings[0]), strings[1], strings[2]);
-
-                klantenLijst.Add(klant);
-            }
-            return klantenLijst;
-        }
     }
 }

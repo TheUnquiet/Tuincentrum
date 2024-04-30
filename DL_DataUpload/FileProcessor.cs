@@ -45,21 +45,6 @@ namespace DL_DataUpload
             ZipFile.ExtractToDirectory(zipFileName, destinationFolder);
         }
 
-        public List<string> ReadFile(string filename)
-        {
-            try
-            {
-                List<string> klanten = new List<string>();
-                using (StreamReader sr = new StreamReader(filename))
-                {
-                    string line;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        klanten.Add(line);
-                    }
-                }
-                return klanten;
-            } catch (Exception e) { throw new FileNotFoundException(); }
-        }
+        
     }
 }

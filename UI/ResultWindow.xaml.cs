@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BL.Interfaces;
+using BL.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,16 +21,29 @@ namespace UI_DataUpload
     /// </summary>
     public partial class ResultWindow : Window
     {
-        public ResultWindow(string fileName, List<string> messages)
+        private string connectionstring = @"Data Source=LAPTOP-RQN2J66V\\SQLEXPRESS;Initial Catalog=Tuincentrum;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+        private ITuincentrumRepository tuincentrumRepository;
+
+        public ResultWindow()
         {
             InitializeComponent();
-            FileNameTextBox.Text = fileName;
-            ResultsListBox.ItemsSource = messages;
+            FileNameTextBox.Text = "Hello";
+            ResultsListBox.ItemsSource = "Hello";
+
+            
         }
 
         public void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void UploadButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in ResultsListBox.ItemsSource)
+            {
+                tuincentrumRepository.SchrijfKlant((Klant)item);
+            }
         }
     }
 }

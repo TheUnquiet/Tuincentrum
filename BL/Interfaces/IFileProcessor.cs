@@ -13,6 +13,5 @@ namespace BL.Interfaces
         List<string> GetFileNamesFromZip(string path);
         bool IsFolderEmpty(string folderName);
         void Unzip(string zipFileName, string destinationFolder);
-        List<string> ReadFile(string filename);
     }
 }

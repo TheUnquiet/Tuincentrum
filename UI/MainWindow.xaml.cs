@@ -48,38 +48,30 @@ namespace UI
             }
         }
 
-        private void OpenDestinationButton_Click(object sender, RoutedEventArgs e)
+        private void DestinationFolderButton_Click(object sender, RoutedEventArgs e)
         {
-            bool? res = folderDialog.ShowDialog();
-            if (res == true && !string.IsNullOrEmpty(folderDialog.FolderName)) {
+            bool? result = folderDialog.ShowDialog();
+            if (result == true && !string.IsNullOrWhiteSpace(folderDialog.FolderName))
+            {
                 if (!fileManager.IsFolderEmpty(folderDialog.FolderName))
                 {
-                    var messageBoxResult = MessageBox.Show($"Clean Folder {folderDialog.FolderName}", "Confirmation", MessageBoxButton.YesNo);
-
-                    if (messageBoxResult == MessageBoxResult.Yes)
+                    if (MessageBox.Show($"Clean folder {folderDialog.FolderName}", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                     {
                         fileManager.CleanFolder(folderDialog.FolderName);
                         DestinationFolderTextBox.Text = folderDialog.FolderName;
                     }
                 }
             }
-            DestinationFolderTextBox.Text = folderDialog.FolderName;
         }
+
 
         private void ExcecuteButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 fileManager.ProcessZip(SourceFileTextBox.Text, DestinationFolderTextBox.Text);
-                List<Klant> klanten = fileManager.MaakKlanten(DestinationFolderTextBox.Text);
-                List<string> klantenOutput = new();
 
-                foreach (var klant in klanten)
-                {
-                    klantenOutput.Add(klant.ToString());
-                }
-
-                ResultWindow rw = new ResultWindow(SourceFileTextBox.Text, klantenOutput);
+                ResultWindow rw = new ResultWindow();
                 rw.Show();
 
             } catch (Exception ex)

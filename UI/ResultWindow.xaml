@@ -11,12 +11,15 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <TextBox Grid.Row="0" Name="FileNameTextBox" Margin="5" IsReadOnly="true" />
         <ListBox Grid.Row="1" Name="ResultsListBox" Margin="5" />
-        <Button Grid.Row="2" Name="CloseButton" Margin="5" Content="Close" Click="CloseButton_Click"/>
+        <Button Grid.Row="2" Name="UploadButton" Margin="5" Content="Upload" Click="UploadButton_Click"/>
+
+        <Button Grid.Row="3" Name="CloseButton" Margin="5" Content="Close" Click="CloseButton_Click"/>
     </Grid>
 </Window>
