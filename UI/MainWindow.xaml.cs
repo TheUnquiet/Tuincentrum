@@ -30,7 +30,7 @@ namespace UI
             fileDialog.Filter = "Zip files (.zip)| *.zip";
             fileDialog.InitialDirectory = @"C:\data\tuinData";
             fileDialog.Multiselect = false;
-            folderDialog.InitialDirectory = @"C:\data\tuinData";
+            folderDialog.InitialDirectory = @"C:\data";
         }
 
         private void OpenZipFileButton_Click(object sender, RoutedEventArgs e)
@@ -48,15 +48,26 @@ namespace UI
 
         private void OpenDestinationButton_Click(object sender, RoutedEventArgs e)
         {
-            bool? res = fileDialog.ShowDialog();
-            if (res == true && !string.IsNullOrEmpty(fileDialog.FileName))
-            {
-                //
+            bool? res = folderDialog.ShowDialog();
+            if (res == true && !string.IsNullOrEmpty(folderDialog.FolderName)) {
+                if (!fileManager.IsFolderEmpty(folderDialog.FolderName))
+                {
+                    var messageBoxResult = MessageBox.Show($"Clean Folder {folderDialog.FolderName}", "Confirmation", MessageBoxButton.YesNo);
+
+                    if (messageBoxResult == MessageBoxResult.Yes)
+                    {
+                        fileManager.CleanFolder(folderDialog.FolderName);
+                        DestinationFolderTextBox.Text = folderDialog.FolderName;
+                    }
+                }
             }
+            DestinationFolderTextBox.Text = folderDialog.FolderName;
         }
 
         private void ExcecuteButton_Click(object sender, RoutedEventArgs e)
         {
+            fileManager.ProcessZip(SourceFileTextBox.Text, DestinationFolderTextBox.Text);
+
 
         }
     }
