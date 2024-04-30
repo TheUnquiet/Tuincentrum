@@ -37,5 +37,10 @@ namespace BL.Models
                 adres = value;
             }
         }
+
+        public override string ToString()
+        {
+            return $"{Id} {Name} {Adres}";
+        }
     }
 }

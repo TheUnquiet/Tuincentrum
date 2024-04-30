@@ -13,7 +13,7 @@ namespace BL.Managers
     {
         private IFileProcessor processor;
         private const string productsFile = "producten.txt";
-        private const string klantenFile = "klanten.txt";
+        private const string klantenFile = "/klanten.txt";
         private const string offertesFile = "offertes.txt";
         private const string offerte_productenFile = "offerte_producten.txt";
 
@@ -51,15 +51,18 @@ namespace BL.Managers
             //List<string> klanten = LeesKlanten();
         }
 
-        public List<Klant> MaakKlanten(List<string> klanten)
+        public List<Klant> MaakKlanten(string prefix)
         {
             List<Klant> klantenLijst = new List<Klant>();
-            List<string> klantenLijstFile = processor.ReadFile(klantenFile);
+            List<string> klantenLijstFile = processor.ReadFile(prefix + klantenFile);
 
-            foreach (string klant in klantenLijstFile)
+            foreach (string line in klantenLijstFile)
             {
-                string[] strings = klant.Split(klant, '|');
-                klantenLijst.Add(new Klant(int.Parse(strings[0]), strings[1], strings[2]));
+                string[] strings = line.Split('|');
+
+                Klant klant = new Klant(int.Parse(strings[0]), strings[1], strings[2]);
+
+                klantenLijst.Add(klant);
             }
             return klantenLijst;
         }

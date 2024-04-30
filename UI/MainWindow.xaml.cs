@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BL.Models;
+using UI_DataUpload;
 
 namespace UI
 {
@@ -28,7 +30,7 @@ namespace UI
             InitializeComponent();
             fileDialog.DefaultExt = ".zip";
             fileDialog.Filter = "Zip files (.zip)| *.zip";
-            fileDialog.InitialDirectory = @"C:\data\tuinData";
+            fileDialog.InitialDirectory = @"C:\data\";
             fileDialog.Multiselect = false;
             folderDialog.InitialDirectory = @"C:\data";
         }
@@ -66,9 +68,24 @@ namespace UI
 
         private void ExcecuteButton_Click(object sender, RoutedEventArgs e)
         {
-            fileManager.ProcessZip(SourceFileTextBox.Text, DestinationFolderTextBox.Text);
+            try
+            {
+                fileManager.ProcessZip(SourceFileTextBox.Text, DestinationFolderTextBox.Text);
+                List<Klant> klanten = fileManager.MaakKlanten(DestinationFolderTextBox.Text);
+                List<string> klantenOutput = new();
 
+                foreach (var klant in klanten)
+                {
+                    klantenOutput.Add(klant.ToString());
+                }
 
+                ResultWindow rw = new ResultWindow(SourceFileTextBox.Text, klantenOutput);
+                rw.Show();
+
+            } catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "FileManager", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

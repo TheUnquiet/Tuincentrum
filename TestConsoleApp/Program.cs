@@ -1,4 +1,5 @@
-﻿using BL.Managers;
+﻿using BL.Interfaces;
+using BL.Managers;
 using DL_DataUpload;
 
 namespace TestConsoleApp 
@@ -7,7 +8,10 @@ namespace TestConsoleApp
     {
         static void Main(string[] args)
         {
-            // TODO test klantenLijst
+            IFileProcessor fp = new FileProcessor();
+            FileManager fm = new FileManager(fp);
+            //fm.MaakKlanten(fp.ReadFile());
+
         }
     }
 }
