@@ -50,11 +50,10 @@ namespace BL.Managers
 
         public void ProcessZip(string zipFileName, string destinationFolder)
         {
-            
-            processor.Unzip(zipFileName, destinationFolder);
-            //List<string> klanten = LeesKlanten();
+            try
+            {
+                processor.Unzip(zipFileName, destinationFolder);
+            } catch (Exception ex) { throw new FileManagerException($"ProcessZip - {ex.Message}"); }
         }
-
-
     }
 }

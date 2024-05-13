@@ -10,8 +10,7 @@ namespace TestConsoleApp
         {
             IFileProcessor fp = new FileProcessor();
             FileManager fm = new FileManager(fp);
-            //fm.MaakKlanten(fp.ReadFile());
-
+            
         }
     }
 }
