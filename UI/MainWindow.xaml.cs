@@ -13,6 +13,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BL.Models;
 using UI_DataUpload;
+using BL.Interfaces;
+using DL_Data;
 
 namespace UI
 {
@@ -23,8 +25,10 @@ namespace UI
     {
         private OpenFileDialog fileDialog = new OpenFileDialog();
         private OpenFolderDialog folderDialog = new OpenFolderDialog();
-        private FileManager fileManager = new FileManager(new FileProcessor());
-
+        private IFileProcessor fileProcessor;
+        private ITuincentrumRepository tuincentrumRepository;
+        private FileManager fileManager;
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -33,6 +37,10 @@ namespace UI
             fileDialog.InitialDirectory = @"C:\data\";
             fileDialog.Multiselect = false;
             folderDialog.InitialDirectory = @"C:\data";
+
+            fileProcessor = new FileProcessor();
+            tuincentrumRepository = new TuincentrumRepository("");
+            fileManager = new FileManager(fileProcessor);
         }
 
         private void OpenZipFileButton_Click(object sender, RoutedEventArgs e)
@@ -61,6 +69,10 @@ namespace UI
                         DestinationFolderTextBox.Text = folderDialog.FolderName;
                     }
                 }
+                else
+                {
+                    DestinationFolderTextBox.Text = folderDialog.FolderName;
+                }
             }
         }
 
@@ -70,9 +82,8 @@ namespace UI
             try
             {
                 fileManager.ProcessZip(SourceFileTextBox.Text, DestinationFolderTextBox.Text);
+                
 
-                ResultWindow rw = new ResultWindow();
-                rw.Show();
 
             } catch (Exception ex)
             {

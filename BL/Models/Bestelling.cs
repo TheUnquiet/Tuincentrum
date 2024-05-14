@@ -8,8 +8,8 @@ namespace BL.Models
 {
     public class Bestelling
     {
-        public int Offerte_Id { get; set; }
-        public int Product_Id { get; set; }
-        public int Aantal_Product { get; set; }
+        public int Offerte_Id { get; private set; }
+        public int Product_Id { get; private set; }
+        public int Aantal_Product { get; private set; }
     }
 }

@@ -21,16 +21,18 @@ namespace BL.Models
         private string name;
         public string Name { 
             get { return name; } 
-            set { if (string.IsNullOrEmpty(value)) 
+            private set { 
+                if (string.IsNullOrEmpty(value)) 
                     throw new DomeinException($"Klant naam is leeg"); 
-                name = value; }
+                name = value; 
+            }
         }
 
         private string adres;
         public string Adres
         {
             get { return adres; }
-            set
+            private set
             {
                 if (string.IsNullOrEmpty(value))
                     throw new DomeinException($"Klant naam is leeg");

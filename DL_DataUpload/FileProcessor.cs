@@ -42,9 +42,28 @@ namespace DL_DataUpload
 
         public void Unzip(string zipFileName, string destinationFolder)
         {
-            ZipFile.ExtractToDirectory(zipFileName, destinationFolder);
+            try
+            {
+                ZipFile.ExtractToDirectory(zipFileName, destinationFolder);
+            } catch (Exception ex)
+            {
+                throw new Exception();
+            }
         }
 
-        
+        public List<string> Readfile(string fileName)
+        {
+            List<string> results = new List<string>();
+            string file = "*" + fileName + "*";
+            using (StreamReader sr = new StreamReader(fileName))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    results.Add(line);
+                }
+            }
+            return results;
+        }
     }
 }

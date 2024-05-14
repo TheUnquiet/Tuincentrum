@@ -24,13 +24,11 @@ namespace UI_DataUpload
         private string connectionstring = @"Data Source=LAPTOP-RQN2J66V\\SQLEXPRESS;Initial Catalog=Tuincentrum;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
         private ITuincentrumRepository tuincentrumRepository;
 
-        public ResultWindow()
+        public ResultWindow(List<string> data, string filename)
         {
             InitializeComponent();
-            FileNameTextBox.Text = "Hello";
-            ResultsListBox.ItemsSource = "Hello";
-
-            
+            FileNameTextBox.Text = filename;
+            ResultsListBox.ItemsSource = data;
         }
 
         public void CloseButton_Click(object sender, RoutedEventArgs e)

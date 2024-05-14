@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BL\BL.csproj" />
     <ProjectReference Include="..\DL_DataUpload\DL_DataUpload.csproj" />
+    <ProjectReference Include="..\DL_Data\DL_Data.csproj" />
   </ItemGroup>
 
 </Project>

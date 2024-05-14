@@ -12,15 +12,7 @@ namespace BL.Managers
     public class FileManager
     {
         private IFileProcessor processor;
-
-        private List<string> files = new List<string>()
-        {
-            @"producten.txt",
-            @"klanten.txt",
-            @"offertes.txt",
-            @"offerte_producten.txt"
-        };
-
+        
         public FileManager(IFileProcessor processor)
         {
             this.processor = processor; 
@@ -54,6 +46,11 @@ namespace BL.Managers
             {
                 processor.Unzip(zipFileName, destinationFolder);
             } catch (Exception ex) { throw new FileManagerException($"ProcessZip - {ex.Message}"); }
+        }
+
+        public List<string> Readfile(string fileName)
+        {
+            return processor.Readfile(fileName);
         }
     }
 }
