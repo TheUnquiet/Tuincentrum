@@ -28,6 +28,7 @@ namespace UI
         private IFileProcessor fileProcessor;
         private ITuincentrumRepository tuincentrumRepository;
         private FileManager fileManager;
+        private TuincentrumManager tuincentrumManager;
         
         public MainWindow()
         {
@@ -39,8 +40,9 @@ namespace UI
             folderDialog.InitialDirectory = @"C:\data";
 
             fileProcessor = new FileProcessor();
-            tuincentrumRepository = new TuincentrumRepository("");
+            tuincentrumRepository = new TuincentrumRepository("Data Source=DESKTOP-4SHJCPG\\SQLEXPRESS;Initial Catalog=Tuincentrum;Integrated Security=True;Encrypt=True;TrustServerCertificate=True");
             fileManager = new FileManager(fileProcessor);
+            tuincentrumManager = new TuincentrumManager(tuincentrumRepository, fileManager);
         }
 
         private void OpenZipFileButton_Click(object sender, RoutedEventArgs e)
@@ -76,14 +78,17 @@ namespace UI
             }
         }
 
-
         private void ExcecuteButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 fileManager.ProcessZip(SourceFileTextBox.Text, DestinationFolderTextBox.Text);
-                
+                tuincentrumManager.UploadKlanten(DestinationFolderTextBox.Text + "\\" + ZipFileListBox.Items[0]);
+                tuincentrumManager.UploadBestellingen(DestinationFolderTextBox.Text + "\\" + ZipFileListBox.Items[1]);
+                tuincentrumManager.UploadOffertes(DestinationFolderTextBox.Text + "\\" + ZipFileListBox.Items[2]);
+                tuincentrumManager.UploadProducten(DestinationFolderTextBox.Text + "\\" + ZipFileListBox.Items[3]);
 
+                MessageBox.Show("Upload klaar!");
 
             } catch (Exception ex)
             {

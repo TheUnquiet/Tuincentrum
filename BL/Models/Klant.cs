@@ -9,22 +9,28 @@ namespace BL.Models
 {
     public class Klant
     {
-        public Klant(int id, string name, string adres)
+        public Klant(int id, string naam, string adres)
         {
             Id = id;
-            Name = name;
+            Naam = naam;
             Adres = adres;
         }
+        private int id;
+        public int Id {
+            get { return id; }
+            set
+            {
+                if (value < 0) throw new DomeinException("Id is onder nul"); id = value;
+            }
+        }
 
-        public int? Id;
-
-        private string name;
-        public string Name { 
-            get { return name; } 
+        private string naam;
+        public string Naam { 
+            get { return naam; } 
             private set { 
                 if (string.IsNullOrEmpty(value)) 
                     throw new DomeinException($"Klant naam is leeg"); 
-                name = value; 
+                naam = value; 
             }
         }
 
@@ -42,7 +48,7 @@ namespace BL.Models
 
         public override string ToString()
         {
-            return $"{Id} {Name} {Adres}";
+            return $"{Id} {Naam} {Adres}";
         }
     }
 }

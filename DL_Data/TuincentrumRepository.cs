@@ -34,7 +34,7 @@ namespace DL_Data
                     cmd.Parameters.Add(new SqlParameter("@name", SqlDbType.NVarChar));
                     cmd.Parameters.Add(new SqlParameter("@adres", SqlDbType.NVarChar));
                     cmd.Parameters["@id"].Value = klant.Id;
-                    cmd.Parameters["@name"].Value = klant.Name;
+                    cmd.Parameters["@name"].Value = klant.Naam;
                     cmd.Parameters["@adres"].Value = klant.Adres;
 
                     int count = (int)cmd.ExecuteScalar();
@@ -45,7 +45,7 @@ namespace DL_Data
 
         public void SchrijfKlant(Klant klant)
         {
-            string SQL = "insert into klant(id, naam, adres) values(@id, @name, @adres";
+            string SQL = "insert into klant(id, naam, adres) values(@id, @naam, @adres)";
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlCommand cmd = conn.CreateCommand())
             {
@@ -54,15 +54,14 @@ namespace DL_Data
                     conn.Open();
                     cmd.CommandText = SQL;
                     cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
-                    cmd.Parameters.Add(new SqlParameter("@name", SqlDbType.NVarChar));
+                    cmd.Parameters.Add(new SqlParameter("@naam", SqlDbType.NVarChar));
                     cmd.Parameters.Add(new SqlParameter("@adres", SqlDbType.NVarChar));
                     cmd.Parameters["@id"].Value = klant.Id;
-                    cmd.Parameters["@name"].Value = klant.Name;
+                    cmd.Parameters["@naam"].Value = klant.Naam;
                     cmd.Parameters["@adres"].Value = klant.Adres;
                     cmd.ExecuteNonQuery();
                 } catch (Exception ex) { throw new DomeinException($"SchijfKlant -{ex.Message} "); }
             }
         }
-
     }
 }
