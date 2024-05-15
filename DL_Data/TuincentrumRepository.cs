@@ -20,6 +20,11 @@ namespace DL_Data
             this.connectionString = connectionString;
         }
 
+        public bool HeeftBestelling(Bestelling b)
+        {
+            
+        }
+
         public bool HeeftKlant(Klant klant)
         {
             string SQL = "select count(*) from klant where id=@id and naam=@name and adres=@adres";
@@ -43,6 +48,21 @@ namespace DL_Data
             }
         }
 
+        public bool HeeftOfferte(Offerte o)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool HeeftProduct(Product p)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SchrijfBestelling(Bestelling b)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SchrijfKlant(Klant klant)
         {
             string SQL = "insert into klant(id, naam, adres) values(@id, @naam, @adres)";
@@ -62,6 +82,16 @@ namespace DL_Data
                     cmd.ExecuteNonQuery();
                 } catch (Exception ex) { throw new DomeinException($"SchijfKlant -{ex.Message} "); }
             }
+        }
+
+        public void SchrijfOfferte(Offerte o)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SchrijfProduct(Product p)
+        {
+            throw new NotImplementedException();
         }
     }
 }

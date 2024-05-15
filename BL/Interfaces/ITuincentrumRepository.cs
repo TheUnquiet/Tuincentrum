@@ -9,7 +9,13 @@ namespace BL.Interfaces
 {
     public interface ITuincentrumRepository
     {
+        bool HeeftBestelling(Bestelling b);
         bool HeeftKlant(Klant k);
+        bool HeeftOfferte(Offerte o);
+        bool HeeftProduct(Product p);
+        void SchrijfBestelling(Bestelling b);
         void SchrijfKlant(Klant klant);
+        void SchrijfOfferte(Offerte o);
+        void SchrijfProduct(Product p);
     }
 }

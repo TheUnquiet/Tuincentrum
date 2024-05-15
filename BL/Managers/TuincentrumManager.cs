@@ -2,6 +2,7 @@
 using BL.Interfaces;
 using BL.Models;
 using System.Diagnostics.Metrics;
+using System.Linq.Expressions;
 
 namespace BL.Managers
 {
@@ -33,19 +34,43 @@ namespace BL.Managers
 
         public List<Bestelling> MaakBestellingen(List<string> bestellingenLijst)
         {
-            Dictionary<int, Bestelling> bestellingen = new Dictionary<int, Bestelling>();
+            List<Bestelling> bestellingen = new List<Bestelling>();
             foreach (string bestelling in  bestellingenLijst)
             {
                 string[] strings = bestelling.Split('|');
                 Bestelling b = new(int.Parse(strings[0]), int.Parse(strings[1]), int.Parse(strings[2]));
 
-                bestellingen.Add()
+                bestellingen.Add(b);
             }
+            return bestellingen;
+        }
+
+        private List<Offerte> MaakOffertes(List<string> offertesLijst)
+        {
+            Dictionary<int, Offerte> offertes = new Dictionary<int, Offerte>();
+            foreach (string offerte in offertesLijst)
+            {
+                string[] strings = offerte.Split('|');
+                Offerte o = new(int.Parse(strings[0]), DateTime.Parse(strings[1], int.Parse(strings[2]), );
+            }
+        }
+
+        private List<Product> MaakProducten(List<string> producten)
+        {
+            throw new NotImplementedException();
         }
 
         public void UploadBestellingen(string filename)
         {
-             
+            try
+            {
+                List<string> bestellingen = fileManager.Readfile(filename);
+                List<Bestelling> bestellingenObjecten = MaakBestellingen(bestellingen);
+                foreach (Bestelling b in bestellingenObjecten)
+                {
+                    if (!tuincentrumRepository.HeeftBestelling(b)) tuincentrumRepository.SchrijfBestelling(b);
+                }
+            } catch (Exception ex) { throw new DomeinException($"UploadBestellingen - {ex.Message}", ex); }
         }
 
         public void UploadKlanten(string filename)
@@ -63,12 +88,28 @@ namespace BL.Managers
 
         public void UploadOffertes(string filename)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<string> offertes = fileManager.Readfile(filename);
+                List<Offerte> offerteObjecten = MaakOffertes(offertes);
+                foreach (Offerte o in offerteObjecten)
+                {
+                    if (!tuincentrumRepository.HeeftOfferte(o)) tuincentrumRepository.SchrijfOfferte(o);
+                }
+            } catch (Exception ex) { throw new DomeinException($"UplpadOffertes - {ex.Message}", ex); }
         }
 
         public void UploadProducten(string filename)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<string> producten = fileManager.Readfile(filename);
+                List<Product> productObjecten = MaakProducten(producten);
+                foreach (Product p in productObjecten)
+                {
+                    if (!tuincentrumRepository.HeeftProduct(p)) tuincentrumRepository.SchrijfProduct(p);
+                }
+            } catch (Exception ex) { throw new DomeinException($"UploadProduct - {ex.Message}", ex); }
         }
     }
 }

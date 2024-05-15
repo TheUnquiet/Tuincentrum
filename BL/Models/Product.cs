@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BL.Models
 {
-    public class Plant
+    public class Product
     {
-        public Plant(int id, string naam_nl, string naam_W, int euro, string beschrijving)
+        public Product(int id, string naam_nl, string naam_W, int euro, string beschrijving)
         {
             Id = id;
             Naam_nl = naam_nl;
