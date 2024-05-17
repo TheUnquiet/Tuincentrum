@@ -13,7 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BL", "BL\BL.csproj", "{3AB3
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0D1F044A-559A-4595-B380-13A09333AB5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppTest", "ConsoleAppTest\ConsoleAppTest.csproj", "{31C74CD2-2A94-4C32-B7D7-84BC799E88BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppTest", "ConsoleAppTest\ConsoleAppTest.csproj", "{31C74CD2-2A94-4C32-B7D7-84BC799E88BF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{DF47F10B-533E-49AD-A64F-8DC513B307A5}"
+	ProjectSection(SolutionItems) = preProject
+		Bestelling.sql = Bestelling.sql
+		Klant.sql = Klant.sql
+		Offerte.sql = Offerte.sql
+		Product.sql = Product.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

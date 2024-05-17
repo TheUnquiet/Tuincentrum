@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using BL.Interfaces;
 using BL.Models;
 using BL.Exceptions;
+using System.Numerics;
 
 namespace DL_Data
 {
@@ -22,7 +23,7 @@ namespace DL_Data
 
         public bool HeeftBestelling(Bestelling b)
         {
-            
+            throw new NotImplementedException();
         }
 
         public bool HeeftKlant(Klant klant)
@@ -60,12 +61,7 @@ namespace DL_Data
 
         public void SchrijfBestelling(Bestelling b)
         {
-            throw new NotImplementedException();
-        }
-
-        public void SchrijfKlant(Klant klant)
-        {
-            string SQL = "insert into klant(id, naam, adres) values(@id, @naam, @adres)";
+            string SQL = "insert into bestelling() values()";
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlCommand cmd = conn.CreateCommand())
             {
@@ -73,10 +69,28 @@ namespace DL_Data
                 {
                     conn.Open();
                     cmd.CommandText = SQL;
-                    cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
                     cmd.Parameters.Add(new SqlParameter("@naam", SqlDbType.NVarChar));
                     cmd.Parameters.Add(new SqlParameter("@adres", SqlDbType.NVarChar));
-                    cmd.Parameters["@id"].Value = klant.Id;
+                    cmd.Parameters["@naam"].Value = klant.Naam;
+                    cmd.Parameters["@adres"].Value = klant.Adres;
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex) { throw new DomeinException($"SchijfKlant -{ex.Message} "); }
+            }
+        }
+
+        public void SchrijfKlant(Klant klant)
+        {
+            string SQL = "insert into klant(naam, adres) values(@naam, @adres)";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                try
+                {
+                    conn.Open();
+                    cmd.CommandText = SQL;
+                    cmd.Parameters.Add(new SqlParameter("@naam", SqlDbType.NVarChar));
+                    cmd.Parameters.Add(new SqlParameter("@adres", SqlDbType.NVarChar));
                     cmd.Parameters["@naam"].Value = klant.Naam;
                     cmd.Parameters["@adres"].Value = klant.Adres;
                     cmd.ExecuteNonQuery();

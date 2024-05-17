@@ -8,11 +8,28 @@ namespace BL.Models
 {
     public class Offerte
     {
-        public int Id { get; internal set; }
-        public DateTime Datum { get; set; }
-        public bool Afhaal { get; set; }
-        public int MyProperty { get; set; }
-        public bool Aanleg { get; set; }
-        public int AantalProducten { get; set; }
+        public int? Id;
+        private DateTime Datum;
+        private bool Afhaal;
+        private bool Aanleg;
+        private int AantalProducten;
+        private float Prijs;
+
+        public Offerte(int id, DateTime datum, bool afhaal, bool aanleg, int aantalProducten)
+        {
+            Id = id;
+            Datum = datum;
+            Afhaal = afhaal;
+            Aanleg = aanleg;
+            AantalProducten = aantalProducten;
+        }
+
+        public Offerte(DateTime datum, bool afhaal, bool aanleg, int aantalProducten)
+        {
+            Datum = datum;
+            Afhaal = afhaal;
+            Aanleg = aanleg;
+            AantalProducten = aantalProducten;
+        }
     }
 }

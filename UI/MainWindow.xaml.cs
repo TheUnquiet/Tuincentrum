@@ -15,6 +15,7 @@ using BL.Models;
 using UI_DataUpload;
 using BL.Interfaces;
 using DL_Data;
+using System.Configuration;
 
 namespace UI
 {
@@ -40,9 +41,9 @@ namespace UI
             folderDialog.InitialDirectory = @"C:\data";
 
             fileProcessor = new FileProcessor();
-            tuincentrumRepository = new TuincentrumRepository("Data Source=DESKTOP-4SHJCPG\\SQLEXPRESS;Initial Catalog=Tuincentrum;Integrated Security=True;Encrypt=True;TrustServerCertificate=True");
+            tuincentrumRepository = new TuincentrumRepository(ConfigurationManager.ConnectionStrings["TuincentrumDBConnectionLaptop"].ToString());
             fileManager = new FileManager(fileProcessor);
-            tuincentrumManager = new TuincentrumManager(tuincentrumRepository, fileManager);
+            tuincentrumManager = new TuincentrumManager(tuincentrumRepository, fileProcessor);
         }
 
         private void OpenZipFileButton_Click(object sender, RoutedEventArgs e)

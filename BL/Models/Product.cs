@@ -8,6 +8,12 @@ namespace BL.Models
 {
     public class Product
     {
+        private int? Id;
+        private string Naam_nl;
+        private string Naam_W;
+        private int Euro;
+        private string Beschrijving;
+
         public Product(int id, string naam_nl, string naam_W, int euro, string beschrijving)
         {
             Id = id;
@@ -17,10 +23,12 @@ namespace BL.Models
             Beschrijving = beschrijving;
         }
 
-        public int Id { get; private set; }
-        public string Naam_nl { get; set; }
-        public string Naam_W { get; set; }
-        public int Euro { get; set; }
-        public string Beschrijving { get; set; }
+        public Product(string naam_nl, string naam_W, int euro, string beschrijving)
+        {
+            Naam_nl = naam_nl;
+            Naam_W = naam_W;
+            Euro = euro;
+            Beschrijving = beschrijving;
+        }
     }
 }

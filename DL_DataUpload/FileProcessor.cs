@@ -1,4 +1,5 @@
-﻿using BL.Interfaces;
+﻿using BL.Exceptions;
+using BL.Interfaces;
 using BL.Models;
 using System;
 using System.Collections.Generic;
@@ -64,6 +65,71 @@ namespace DL_DataUpload
                 }
             }
             return results;
+        }
+
+        public List<Klant> MaakKlanten(List<string> klantenLijst)
+        {
+            List<Klant> klanten = new();
+
+            foreach (string klant in klantenLijst)
+            {
+                string[] strings = klant.Split('|');
+                Klant k = new(int.Parse(strings[0]), strings[1], strings[2]);
+
+                klanten.Add(k);
+
+            }
+            return klanten;
+        }
+
+        public List<Bestelling> MaakBestellingen(List<string> bestellingenLijst)
+        {
+            List<Bestelling> bestellingen = new List<Bestelling>();
+            foreach (string bestelling in bestellingenLijst)
+            {
+                string[] strings = bestelling.Split('|');
+                Bestelling b = new(int.Parse(strings[0]), int.Parse(strings[1]), int.Parse(strings[2]));
+
+                bestellingen.Add(b);
+            }
+            return bestellingen;
+        }
+        
+        public List<Offerte> MaakOffertes(List<string> offertesLijst)
+        {
+            try
+            {
+                List<Offerte> offertes = new List<Offerte>();
+                foreach (string offerte in offertesLijst)
+                {
+                    string[] strings = offerte.Split('|');
+                    Offerte o = new(DateTime.Parse(strings[1]),
+                        bool.Parse(strings[2]),
+                        bool.Parse(strings[3]),
+                        int.Parse(strings[4]));
+                    offertes.Add(o);
+                }
+
+                return offertes;
+            }
+            catch (Exception ex) { throw new FileExcpetion($"MaakOffertes - {ex.Message}", ex); }
+        }
+        
+        public List<Product> MaakProducten(List<string> productenLijst)
+        {
+            try
+            {
+                List<Product> producten = new List<Product>();
+                foreach (string product in productenLijst)
+                {
+                    string[] strings = product.Split('|');
+                    Product p = new(strings[1], strings[2], int.Parse(strings[3]), strings[4]);
+                    producten.Add(p);
+                }
+
+                return producten;
+            }
+            catch (Exception ex) { throw new FileExcpetion($"MaakProducten - {ex.Message}", ex); }
         }
     }
 }

@@ -1,0 +1,6 @@
+CREATE TABLE [dbo].[Klant]
+(
+	[id] INT NOT NULL PRIMARY KEY,
+	[naam] NVARCHAR(255) NOT NULL,
+	[adres] NVARCHAR(255) NOT NULL,
+)

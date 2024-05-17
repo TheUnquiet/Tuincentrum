@@ -14,5 +14,9 @@ namespace BL.Interfaces
         bool IsFolderEmpty(string folderName);
         void Unzip(string zipFileName, string destinationFolder);
         List<string> Readfile(string filename);
+        List<Bestelling> MaakBestellingen(List<string> bestellingenLijst);
+        List<Klant> MaakKlanten(List<string> klantenLijst);
+        List<Offerte> MaakOffertes(List<string> offerteLijst);
+        List<Product> MaakProducten(List<string> productenLijst);
     }
 }
