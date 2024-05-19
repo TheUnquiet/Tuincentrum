@@ -8,9 +8,9 @@ namespace BL.Models
 {
     public class Bestelling
     {
-        private int Offerte_Id;
-        private int Product_Id;
-        private int Aantal_Product;
+        public int Offerte_Id;
+        public int Product_Id;
+        public int Aantal_Product;
 
         public Bestelling(int offerte_Id, int product_Id, int aantal_Product)
         {

@@ -6,12 +6,12 @@ using System.Linq.Expressions;
 
 namespace BL.Managers
 {
-    public class TuincentrumManager
+    public class UploadManager
     {
         private ITuincentrumRepository tuincentrumRepository;
         private IFileProcessor fileprocessor;
 
-        public TuincentrumManager(ITuincentrumRepository tuincentrumRepository, IFileProcessor fileManager)
+        public UploadManager(ITuincentrumRepository tuincentrumRepository, IFileProcessor fileManager)
         {
             this.tuincentrumRepository = tuincentrumRepository;
             this.fileprocessor = fileManager;
@@ -51,7 +51,7 @@ namespace BL.Managers
                 List<Offerte> offerteObjecten = fileprocessor.MaakOffertes(offertes);
                 foreach (Offerte o in offerteObjecten)
                 {
-                    if (!tuincentrumRepository.HeeftOfferte(o)) tuincentrumRepository.SchrijfOfferte(o);
+                    tuincentrumRepository.SchrijfOfferte(o);
                 }
             } catch (Exception ex) { throw new DomeinException($"UplpadOffertes - {ex.Message}", ex); }
             

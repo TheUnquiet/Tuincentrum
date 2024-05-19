@@ -3,6 +3,7 @@ using BL.Interfaces;
 using BL.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
@@ -69,44 +70,50 @@ namespace DL_DataUpload
 
         public List<Klant> MaakKlanten(List<string> klantenLijst)
         {
-            List<Klant> klanten = new();
-
-            foreach (string klant in klantenLijst)
+            try
             {
-                string[] strings = klant.Split('|');
-                Klant k = new(int.Parse(strings[0]), strings[1], strings[2]);
+                List<Klant> klanten = new();
+                foreach (string klant in klantenLijst)
+                {
+                    string[] strings = klant.Split('|');
+                    Klant k = new(strings[1], strings[2]);
 
-                klanten.Add(k);
+                    klanten.Add(k);
 
-            }
-            return klanten;
+                }
+                return klanten;
+            } catch (Exception ex) { throw new DomeinException($"MaakKlanten - {ex.Message}", ex); }
         }
 
         public List<Bestelling> MaakBestellingen(List<string> bestellingenLijst)
         {
-            List<Bestelling> bestellingen = new List<Bestelling>();
-            foreach (string bestelling in bestellingenLijst)
+            try
             {
-                string[] strings = bestelling.Split('|');
-                Bestelling b = new(int.Parse(strings[0]), int.Parse(strings[1]), int.Parse(strings[2]));
+                List<Bestelling> bestellingen = new();
+                foreach (string bestelling in bestellingenLijst)
+                {
+                    string[] strings = bestelling.Split('|');
+                    Bestelling b = new(int.Parse(strings[0]), int.Parse(strings[1]), int.Parse(strings[2]));
 
-                bestellingen.Add(b);
-            }
-            return bestellingen;
+                    bestellingen.Add(b);
+                }
+                return bestellingen;
+            } catch (Exception ex) { throw new DomeinException($"MaakBestelling - {ex.Message}", ex); }
         }
         
         public List<Offerte> MaakOffertes(List<string> offertesLijst)
         {
             try
             {
-                List<Offerte> offertes = new List<Offerte>();
+                List<Offerte> offertes = new();
                 foreach (string offerte in offertesLijst)
                 {
                     string[] strings = offerte.Split('|');
                     Offerte o = new(DateTime.Parse(strings[1]),
-                        bool.Parse(strings[2]),
+                        int.Parse(strings[2]),
                         bool.Parse(strings[3]),
-                        int.Parse(strings[4]));
+                        bool.Parse(strings[4]),
+                        int.Parse(strings[5]));
                     offertes.Add(o);
                 }
 
@@ -123,7 +130,7 @@ namespace DL_DataUpload
                 foreach (string product in productenLijst)
                 {
                     string[] strings = product.Split('|');
-                    Product p = new(strings[1], strings[2], int.Parse(strings[3]), strings[4]);
+                    Product p = new(strings[1], strings[2], float.Parse(strings[3]), strings[4]);
                     producten.Add(p);
                 }
 

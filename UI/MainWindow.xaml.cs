@@ -29,7 +29,7 @@ namespace UI
         private IFileProcessor fileProcessor;
         private ITuincentrumRepository tuincentrumRepository;
         private FileManager fileManager;
-        private TuincentrumManager tuincentrumManager;
+        private UploadManager tuincentrumManager;
         
         public MainWindow()
         {
@@ -43,7 +43,7 @@ namespace UI
             fileProcessor = new FileProcessor();
             tuincentrumRepository = new TuincentrumRepository(ConfigurationManager.ConnectionStrings["TuincentrumDBConnectionLaptop"].ToString());
             fileManager = new FileManager(fileProcessor);
-            tuincentrumManager = new TuincentrumManager(tuincentrumRepository, fileProcessor);
+            tuincentrumManager = new UploadManager(tuincentrumRepository, fileProcessor);
         }
 
         private void OpenZipFileButton_Click(object sender, RoutedEventArgs e)
@@ -85,9 +85,10 @@ namespace UI
             {
                 fileManager.ProcessZip(SourceFileTextBox.Text, DestinationFolderTextBox.Text);
                 tuincentrumManager.UploadKlanten(DestinationFolderTextBox.Text + "\\" + ZipFileListBox.Items[0]);
-                tuincentrumManager.UploadBestellingen(DestinationFolderTextBox.Text + "\\" + ZipFileListBox.Items[1]);
-                tuincentrumManager.UploadOffertes(DestinationFolderTextBox.Text + "\\" + ZipFileListBox.Items[2]);
+                tuincentrumManager.UploadOffertes(DestinationFolderTextBox.Text + "\\" + ZipFileListBox.Items[1]);
                 tuincentrumManager.UploadProducten(DestinationFolderTextBox.Text + "\\" + ZipFileListBox.Items[3]);
+                tuincentrumManager.UploadBestellingen(DestinationFolderTextBox.Text + "\\" + ZipFileListBox.Items[2]);
+
 
                 MessageBox.Show("Upload klaar!");
 
@@ -95,6 +96,7 @@ namespace UI
             {
                 MessageBox.Show(ex.Message, "FileManager", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
         }
     }
 }

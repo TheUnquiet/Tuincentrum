@@ -5,4 +5,7 @@ CREATE TABLE [dbo].[Offerte]
 	[afhaal] BIT NOT NULL,
 	[aanleg] BIT NOT NULL,
 	[aantal_producten] INT NOT NULL
+
+	CONSTRAINT [FK_Klantnummer] FOREIGN KEY ([klantnummer]) REFERENCES [Klant]([id])
+
 )

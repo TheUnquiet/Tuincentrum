@@ -21,14 +21,9 @@ namespace DL_Data
             this.connectionString = connectionString;
         }
 
-        public bool HeeftBestelling(Bestelling b)
+        public bool HeeftBestelling(Bestelling bestelling)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool HeeftKlant(Klant klant)
-        {
-            string SQL = "select count(*) from klant where id=@id and naam=@name and adres=@adres";
+            string SQL = "select count(*) from bestelling where offerte_id=@offerte_id and product_id=@product_id";
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlCommand cmd = conn.CreateCommand())
             {
@@ -36,32 +31,41 @@ namespace DL_Data
                 {
                     conn.Open();
                     cmd.CommandText = SQL;
-                    cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
-                    cmd.Parameters.Add(new SqlParameter("@name", SqlDbType.NVarChar));
-                    cmd.Parameters.Add(new SqlParameter("@adres", SqlDbType.NVarChar));
-                    cmd.Parameters["@id"].Value = klant.Id;
-                    cmd.Parameters["@name"].Value = klant.Naam;
-                    cmd.Parameters["@adres"].Value = klant.Adres;
-
+                    cmd.Parameters.Add(new SqlParameter("@offerte_id", SqlDbType.Int));
+                    cmd.Parameters.Add(new SqlParameter("@product_id", SqlDbType.Int));
+                    cmd.Parameters["@offerte_id"].Value = bestelling.Offerte_Id;
+                    cmd.Parameters["@product_id"].Value = bestelling.Product_Id;
                     int count = (int)cmd.ExecuteScalar();
+
                     if (count > 0) return true; return false;
-                } catch (Exception ex) { throw new DomeinException($"HeeftKlant -{ex.Message} "); }
+                } catch (Exception ex) { throw new DomeinException($"HeeftBestelling - {ex.Message}", ex); }
+            }
+        }
+        public void SchrijfBestelling(Bestelling bestelling)
+        {
+            string SQL = "insert into Bestelling(offerte_id, product_id, aantal) values(@offerte_id, @product_id, @aantal)";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                try
+                {
+                    conn.Open();
+                    cmd.CommandText = SQL;
+                    cmd.Parameters.Add(new SqlParameter("@offerte_id", SqlDbType.Int));
+                    cmd.Parameters.Add(new SqlParameter("@product_id", SqlDbType.Int));
+                    cmd.Parameters.Add(new SqlParameter("@aantal", SqlDbType.Int));
+                    cmd.Parameters["@offerte_id"].Value = bestelling.Offerte_Id;
+                    cmd.Parameters["@product_id"].Value = bestelling.Product_Id;
+                    cmd.Parameters["@aantal"].Value = bestelling.Aantal_Product;
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex) { throw new DomeinException($"SchijfKlant -{ex.Message} "); }
             }
         }
 
-        public bool HeeftOfferte(Offerte o)
+        public bool HeeftKlant(Klant klant)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool HeeftProduct(Product p)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SchrijfBestelling(Bestelling b)
-        {
-            string SQL = "insert into bestelling() values()";
+            string SQL = "select count(*) from klant where naam=@naam and adres=@adres";
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlCommand cmd = conn.CreateCommand())
             {
@@ -73,9 +77,10 @@ namespace DL_Data
                     cmd.Parameters.Add(new SqlParameter("@adres", SqlDbType.NVarChar));
                     cmd.Parameters["@naam"].Value = klant.Naam;
                     cmd.Parameters["@adres"].Value = klant.Adres;
-                    cmd.ExecuteNonQuery();
-                }
-                catch (Exception ex) { throw new DomeinException($"SchijfKlant -{ex.Message} "); }
+
+                    int count = (int)cmd.ExecuteScalar();
+                    if (count > 0) return true; return false;
+                } catch (Exception ex) { throw new DomeinException($"HeeftKlant -{ex.Message} "); }
             }
         }
 
@@ -94,18 +99,112 @@ namespace DL_Data
                     cmd.Parameters["@naam"].Value = klant.Naam;
                     cmd.Parameters["@adres"].Value = klant.Adres;
                     cmd.ExecuteNonQuery();
-                } catch (Exception ex) { throw new DomeinException($"SchijfKlant -{ex.Message} "); }
+                }
+                catch (Exception ex) { throw new DomeinException($"SchijfKlant -{ex.Message} "); }
             }
         }
 
-        public void SchrijfOfferte(Offerte o)
+        public bool HeeftOfferte(Offerte offerte)
         {
-            throw new NotImplementedException();
+            string SQL = "select count(*) from offerte where datum=@datum and klantnummer=@klantnummer and afhaal=@afhaal and aanleg=@aanleg and aantal_producten=@aantal_producten";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                try
+                {
+                    conn.Open();
+                    cmd.CommandText = SQL;
+                    cmd.Parameters.Add(new SqlParameter("@datum", SqlDbType.Date));
+                    cmd.Parameters.Add(new SqlParameter("@klantnummer", SqlDbType.Int));
+                    cmd.Parameters.Add(new SqlParameter("@afhaal", SqlDbType.Bit));
+                    cmd.Parameters.Add(new SqlParameter("@aanleg", SqlDbType.Bit));
+                    cmd.Parameters.Add(new SqlParameter("@aantal_producten", SqlDbType.Int));
+                    cmd.Parameters["@datum"].Value = offerte.Datum;
+                    cmd.Parameters["@klantnummer"].Value = offerte.KlantNummer;
+                    cmd.Parameters["@aanleg"].Value = offerte.Aanleg;
+                    cmd.Parameters["@afhaal"].Value = offerte.Afhaal;
+                    cmd.Parameters["@aantal_producten"].Value = offerte.AantalProducten;
+
+                    int count = (int)cmd.ExecuteScalar();
+                    if (count > 0) return true; return false;
+                } catch (Exception ex) { throw new DomeinException($"HeeftOfferte - {ex.Message}", ex); }
+            }
         }
 
-        public void SchrijfProduct(Product p)
+        public void SchrijfOfferte(Offerte offerte)
         {
-            throw new NotImplementedException();
+            string SQL = "insert into offerte(datum, afhaal, klantnummer, aanleg, aantal_producten) values(@datum, @afhaal, @klantnr, @aanleg, @aantal_producten)";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                try
+                {
+                    conn.Open();
+                    cmd.CommandText = SQL;
+                    cmd.Parameters.Add(new SqlParameter("@datum", SqlDbType.Date));
+                    cmd.Parameters.Add(new SqlParameter("@klantNr", SqlDbType.Int));
+                    cmd.Parameters.Add(new SqlParameter("@afhaal", SqlDbType.Bit));
+                    cmd.Parameters.Add(new SqlParameter("@aanleg", SqlDbType.Bit));
+                    cmd.Parameters.Add(new SqlParameter("@aantal_producten", SqlDbType.Int));
+                    cmd.Parameters["@datum"].Value = offerte.Datum;
+                    cmd.Parameters["@klantnr"].Value = offerte.KlantNummer;
+                    cmd.Parameters["@afhaal"].Value = offerte.Afhaal;
+                    cmd.Parameters["@aanleg"].Value = offerte.Aanleg;
+                    cmd.Parameters["@aantal_producten"].Value = offerte.AantalProducten;
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex) { throw new DomeinException($"SchijfKlant -{ex.Message} "); }
+            }
+        }
+
+        public bool HeeftProduct(Product product)
+        {
+            string SQL = "select count(*) from product where naam_nl=@naam_nl and naam_w=@naam_w and prijs=@prijs and beschrijving=@beschrijving";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                try
+                {
+                    conn.Open();
+                    cmd.CommandText = SQL;
+                    cmd.Parameters.Add(new SqlParameter("@naam_nl", SqlDbType.NVarChar));
+                    cmd.Parameters.Add(new SqlParameter("@naam_w", SqlDbType.NVarChar));
+                    cmd.Parameters.Add(new SqlParameter("@prijs", SqlDbType.Float));
+                    cmd.Parameters.Add(new SqlParameter("@beschrijving", SqlDbType.NVarChar));
+                    cmd.Parameters["@naam_nl"].Value = product.Naam_nl;
+                    cmd.Parameters["@naam_w"].Value = product.Naam_W;
+                    cmd.Parameters["@prijs"].Value = product.Prijs;
+                    cmd.Parameters["@beschrijving"].Value = product.Beschrijving;
+
+                    int count = (int)cmd.ExecuteScalar();
+                    if (count > 0) return true; return false;
+                }
+                catch (Exception ex) { throw new DomeinException($"HeeftProduct - {ex.Message}", ex); }
+            }
+        }
+
+        public void SchrijfProduct(Product product)
+        {
+            string SQL = "insert into product(naam_nl, naam_w, prijs, beschrijving) values(@naam_nl, @naam_w, @prijs, @beschrijving)";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                try
+                {
+                    conn.Open();
+                    cmd.CommandText = SQL;
+                    cmd.Parameters.Add(new SqlParameter("@naam_nl", SqlDbType.NVarChar));
+                    cmd.Parameters.Add(new SqlParameter("@naam_w", SqlDbType.NVarChar));
+                    cmd.Parameters.Add(new SqlParameter("@prijs", SqlDbType.Float));
+                    cmd.Parameters.Add(new SqlParameter("@beschrijving", SqlDbType.NVarChar));
+                    cmd.Parameters["@naam_nl"].Value = product.Naam_nl;
+                    cmd.Parameters["@naam_w"].Value = product.Naam_W;
+                    cmd.Parameters["@prijs"].Value = product.Prijs;
+                    cmd.Parameters["@beschrijving"].Value = product.Beschrijving;
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex) { throw new DomeinException($"SchijfKlant -{ex.Message} "); }
+            }
         }
     }
 }

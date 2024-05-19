@@ -1,3 +1,3 @@
-﻿string dateString = "30/12/2023";
+﻿string dateString = "8/02/2024";
 
 Console.WriteLine(DateOnly.Parse(dateString));

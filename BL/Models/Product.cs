@@ -8,26 +8,26 @@ namespace BL.Models
 {
     public class Product
     {
-        private int? Id;
-        private string Naam_nl;
-        private string Naam_W;
-        private int Euro;
-        private string Beschrijving;
+        public int? Id;
+        public string Naam_nl;
+        public string Naam_W;
+        public float Prijs;
+        public string Beschrijving;
 
-        public Product(int id, string naam_nl, string naam_W, int euro, string beschrijving)
+        public Product(int id, string naam_nl, string naam_W, float prijs, string beschrijving)
         {
             Id = id;
             Naam_nl = naam_nl;
             Naam_W = naam_W;
-            Euro = euro;
+            Prijs = prijs;
             Beschrijving = beschrijving;
         }
 
-        public Product(string naam_nl, string naam_W, int euro, string beschrijving)
+        public Product(string naam_nl, string naam_W, float prijs, string beschrijving)
         {
             Naam_nl = naam_nl;
             Naam_W = naam_W;
-            Euro = euro;
+            Prijs = prijs;
             Beschrijving = beschrijving;
         }
     }
