@@ -17,5 +17,7 @@ namespace BL.Interfaces
         void SchrijfKlant(Klant klant);
         void SchrijfOfferte(Offerte o);
         void SchrijfProduct(Product p);
+        Dictionary<string, Klant> LeesKlanten();
+        public List<Offerte> LeesOffertesVoorKlant(Klant k);
     }
 }

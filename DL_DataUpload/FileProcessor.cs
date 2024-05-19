@@ -82,7 +82,7 @@ namespace DL_DataUpload
 
                 }
                 return klanten;
-            } catch (Exception ex) { throw new DomeinException($"MaakKlanten - {ex.Message}", ex); }
+            } catch (Exception ex) { throw new TuincentrumException($"MaakKlanten - {ex.Message}", ex); }
         }
 
         public List<Bestelling> MaakBestellingen(List<string> bestellingenLijst)
@@ -98,7 +98,7 @@ namespace DL_DataUpload
                     bestellingen.Add(b);
                 }
                 return bestellingen;
-            } catch (Exception ex) { throw new DomeinException($"MaakBestelling - {ex.Message}", ex); }
+            } catch (Exception ex) { throw new TuincentrumException($"MaakBestelling - {ex.Message}", ex); }
         }
         
         public List<Offerte> MaakOffertes(List<string> offertesLijst)

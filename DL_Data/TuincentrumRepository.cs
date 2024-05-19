@@ -38,9 +38,10 @@ namespace DL_Data
                     int count = (int)cmd.ExecuteScalar();
 
                     if (count > 0) return true; return false;
-                } catch (Exception ex) { throw new DomeinException($"HeeftBestelling - {ex.Message}", ex); }
+                } catch (Exception ex) { throw new TuincentrumException($"HeeftBestelling - {ex.Message}", ex); }
             }
         }
+
         public void SchrijfBestelling(Bestelling bestelling)
         {
             string SQL = "insert into Bestelling(offerte_id, product_id, aantal) values(@offerte_id, @product_id, @aantal)";
@@ -59,7 +60,7 @@ namespace DL_Data
                     cmd.Parameters["@aantal"].Value = bestelling.Aantal_Product;
                     cmd.ExecuteNonQuery();
                 }
-                catch (Exception ex) { throw new DomeinException($"SchijfKlant -{ex.Message} "); }
+                catch (Exception ex) { throw new TuincentrumException($"SchijfKlant -{ex.Message} "); }
             }
         }
 
@@ -80,7 +81,7 @@ namespace DL_Data
 
                     int count = (int)cmd.ExecuteScalar();
                     if (count > 0) return true; return false;
-                } catch (Exception ex) { throw new DomeinException($"HeeftKlant -{ex.Message} "); }
+                } catch (Exception ex) { throw new TuincentrumException($"HeeftKlant -{ex.Message} "); }
             }
         }
 
@@ -100,7 +101,7 @@ namespace DL_Data
                     cmd.Parameters["@adres"].Value = klant.Adres;
                     cmd.ExecuteNonQuery();
                 }
-                catch (Exception ex) { throw new DomeinException($"SchijfKlant -{ex.Message} "); }
+                catch (Exception ex) { throw new TuincentrumException($"SchijfKlant -{ex.Message} "); }
             }
         }
 
@@ -127,7 +128,7 @@ namespace DL_Data
 
                     int count = (int)cmd.ExecuteScalar();
                     if (count > 0) return true; return false;
-                } catch (Exception ex) { throw new DomeinException($"HeeftOfferte - {ex.Message}", ex); }
+                } catch (Exception ex) { throw new TuincentrumException($"HeeftOfferte - {ex.Message}", ex); }
             }
         }
 
@@ -153,7 +154,7 @@ namespace DL_Data
                     cmd.Parameters["@aantal_producten"].Value = offerte.AantalProducten;
                     cmd.ExecuteNonQuery();
                 }
-                catch (Exception ex) { throw new DomeinException($"SchijfKlant -{ex.Message} "); }
+                catch (Exception ex) { throw new TuincentrumException($"SchijfKlant -{ex.Message} "); }
             }
         }
 
@@ -179,7 +180,7 @@ namespace DL_Data
                     int count = (int)cmd.ExecuteScalar();
                     if (count > 0) return true; return false;
                 }
-                catch (Exception ex) { throw new DomeinException($"HeeftProduct - {ex.Message}", ex); }
+                catch (Exception ex) { throw new TuincentrumException($"HeeftProduct - {ex.Message}", ex); }
             }
         }
 
@@ -203,7 +204,47 @@ namespace DL_Data
                     cmd.Parameters["@beschrijving"].Value = product.Beschrijving;
                     cmd.ExecuteNonQuery();
                 }
-                catch (Exception ex) { throw new DomeinException($"SchijfKlant -{ex.Message} "); }
+                catch (Exception ex) { throw new TuincentrumException($"SchijfKlant -{ex.Message} "); }
+            }
+        }
+
+        public Dictionary<string, Klant> LeesKlanten()
+        {
+            string SQL = "select * from klant";
+            Dictionary<string, Klant> klanten = new Dictionary<string, Klant>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                conn.Open();
+                cmd.CommandText = SQL;
+                IDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    string naamAdres = (string)reader["naam"] + (string)reader["adres"];
+                    klanten.Add(naamAdres, new Klant((int)reader["id"], (string)reader["naam"], (string)reader["adres"]));
+                }
+            }
+
+            return klanten;
+        }
+
+        public List<Offerte> LeesOffertesVoorKlant(Klant k)
+        {
+            string SQL = "select * from offerte where klantnummer=@klantnummer";
+            List<Offerte> offertes = new List<Offerte>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                conn.Open();
+                cmd.CommandText = SQL;
+                cmd.Parameters.Add("@klantnummer", SqlDbType.Int);
+                cmd.Parameters["@klantnummer"].Value = k.Id;
+                IDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    offertes.Add(new Offerte((int)reader["id"], (DateTime)reader["datum"], (int)reader["klantnummer"], (bool)reader["afhaal"], (bool)reader["aanleg"], (int)reader["aantal_producten"]));
+                }
+                return offertes;
             }
         }
     }

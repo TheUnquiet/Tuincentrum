@@ -35,5 +35,10 @@ namespace BL.Models
             Aanleg = aanleg;
             AantalProducten = aantalProducten;
         }
+
+        public override string? ToString()
+        {
+            return $"{Id} {Datum} {KlantNummer} {Afhaal} {Aanleg} {AantalProducten}";
+        }
     }
 }

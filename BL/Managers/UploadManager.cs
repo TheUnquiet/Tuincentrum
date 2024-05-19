@@ -27,7 +27,7 @@ namespace BL.Managers
                 {
                     if (!tuincentrumRepository.HeeftBestelling(b)) tuincentrumRepository.SchrijfBestelling(b);
                 }
-            } catch (Exception ex) { throw new DomeinException($"UploadBestellingen - {ex.Message}", ex); }
+            } catch (Exception ex) { throw new TuincentrumException($"UploadBestellingen - {ex.Message}", ex); }
         }
 
         public void UploadKlanten(string filename)
@@ -40,7 +40,7 @@ namespace BL.Managers
                 {
                     if (!tuincentrumRepository.HeeftKlant(k)) tuincentrumRepository.SchrijfKlant(k);
                 }
-            } catch (Exception ex) { throw new DomeinException($"UploadKlanten - {ex.Message}", ex); }
+            } catch (Exception ex) { throw new TuincentrumException($"UploadKlanten - {ex.Message}", ex); }
         }
 
         public void UploadOffertes(string filename)
@@ -53,7 +53,7 @@ namespace BL.Managers
                 {
                     tuincentrumRepository.SchrijfOfferte(o);
                 }
-            } catch (Exception ex) { throw new DomeinException($"UplpadOffertes - {ex.Message}", ex); }
+            } catch (Exception ex) { throw new TuincentrumException($"UplpadOffertes - {ex.Message}", ex); }
             
         }
 
@@ -67,7 +67,7 @@ namespace BL.Managers
                 {
                     if (!tuincentrumRepository.HeeftProduct(p)) tuincentrumRepository.SchrijfProduct(p);
                 }
-            } catch (Exception ex) { throw new DomeinException($"UploadProduct - {ex.Message}", ex); }
+            } catch (Exception ex) { throw new TuincentrumException($"UploadProduct - {ex.Message}", ex); }
         }
     }
 }

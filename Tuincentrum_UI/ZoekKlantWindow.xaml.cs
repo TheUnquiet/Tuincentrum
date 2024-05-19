@@ -2,9 +2,12 @@
 using BL.Managers;
 using BL.Models;
 using DL_Data;
-using System.Collections.ObjectModel;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,38 +15,38 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Tuincentrum_UI
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ZoekKlant.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ZoekKlantWindow : Window
     {
         private ITuincentrumRepository tuincentrumRepository;
         private TuincentrumManager tuincentrumManager;
-        private ObservableCollection<Klant> klanten;
-        public MainWindow()
+        public ZoekKlantWindow()
         {
             InitializeComponent();
             tuincentrumRepository = new TuincentrumRepository(ConfigurationManager.ConnectionStrings["TuincentrumDBConnectionLaptop"].ToString());
             tuincentrumManager = new TuincentrumManager(tuincentrumRepository);
-            klanten = new ObservableCollection<Klant>();
-        }
-
-        private void ToonKlantenButtonClick(object sender, RoutedEventArgs e)
-        {
-            klanten = new ObservableCollection<Klant>(tuincentrumManager.GeefKlanten().Values);
-            KlantenListBox.ItemsSource = klanten;
-            AantalTextBox.Text += klanten.Count;
         }
 
         private void ZoekKlantButtonClick(object sender, RoutedEventArgs e)
         {
-            ZoekKlantWindow zk = new ZoekKlantWindow();
-            zk.Show();
+            string naam = null;
+            string adres = null;
+            if (!string.IsNullOrWhiteSpace(ZoekNaam.Text)) naam = ZoekNaam.Text;
+            if (!string.IsNullOrWhiteSpace(ZoekAdres.Text)) adres = ZoekAdres.Text;
+            Klant gevondenKlant = tuincentrumManager.ZoekKlant(naam, adres);
+            if (gevondenKlant == null) MessageBox.Show("Klant niet gevonden");
+            else
+            {
+                var offertes = tuincentrumManager.GeefOffertesVoorKlant(gevondenKlant);
+                KlantResultWindow krw = new(gevondenKlant, offertes);
+                krw.Show();
+            }
         }
     }
 }

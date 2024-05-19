@@ -9,6 +9,7 @@ namespace BL.Models
 {
     public class Klant
     {
+        public readonly List<Offerte> offertes;
         public int? Id;
 
         private string naam;
@@ -16,7 +17,7 @@ namespace BL.Models
             get { return naam; } 
             private set { 
                 if (string.IsNullOrWhiteSpace(value))
-                    throw new DomeinException($"Klant naam is leeg"); 
+                    throw new TuincentrumException($"Klant naam is leeg"); 
                 naam = value;
             }
         }
@@ -28,7 +29,7 @@ namespace BL.Models
             private set
             {
                 if (string.IsNullOrWhiteSpace(value))
-                    throw new DomeinException($"Klant naam is leeg");
+                    throw new TuincentrumException($"Klant naam is leeg");
                 adres = value;
             }
         }
