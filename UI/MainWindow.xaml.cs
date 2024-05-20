@@ -40,7 +40,7 @@ namespace UI
             folderDialog.InitialDirectory = @"C:\data";
 
             fileProcessor = new FileProcessor();
-            tuincentrumRepository = new TuincentrumRepository(ConfigurationManager.ConnectionStrings["TuincentrumDBConnectionLaptop"].ToString());
+            tuincentrumRepository = new TuincentrumRepository(ConfigurationManager.ConnectionStrings["TuincentrumDBConnectionDesktop"].ToString());
             fileManager = new FileManager(fileProcessor);
             uploadManager = new UploadManager(tuincentrumRepository, fileProcessor);
         }
