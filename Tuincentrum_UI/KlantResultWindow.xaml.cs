@@ -28,13 +28,13 @@ namespace Tuincentrum_UI
         private Klant klant;
         private ITuincentrumRepository tuincentrumRepository;
         private TuincentrumManager tuincentrumManager;
-        public KlantResultWindow(Klant k, List<OfferteInfo> offertesKlant)
+        public KlantResultWindow(Klant k)
         {
             InitializeComponent();
             IdTextBox.Text += k.Id.ToString();
             NaamTextBox.Text += k.Naam;
             AdresTextBox.Text += k.Adres;
-            OffertesListBox.ItemsSource = offertesKlant;
+            OffertesListBox.ItemsSource = k.Offertes;
             klant = k;
             tuincentrumRepository = new TuincentrumRepository(ConfigurationManager.ConnectionStrings["TuincentrumDBConnectionLaptop"].ToString());
             tuincentrumManager = new TuincentrumManager(tuincentrumRepository);

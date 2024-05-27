@@ -8,7 +8,7 @@ namespace BL.Models.DTOS
 {
     public class OfferteInfo
     {
-        public OfferteInfo(int id, float prijs)
+        public OfferteInfo(int id, double prijs)
         {
             Id = id;
             Prijs = prijs;
@@ -21,7 +21,7 @@ namespace BL.Models.DTOS
 
         public int Id { get; set; }
 
-        public float Prijs { get; set; }
+        public double Prijs { get; set; }
 
         public override string ToString()
         {

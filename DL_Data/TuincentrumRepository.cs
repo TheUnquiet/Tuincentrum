@@ -235,11 +235,11 @@ namespace DL_Data
                     {
                         klanten.Add((int)reader["id"], new Klant(
                             (int)reader["id"], 
-                            (string)reader["naam"], 
+                            (string)reader["naam"],
                             (string)reader["adres"]));
                     }
 
-                    klanten[(int)reader["id"]].Offertes.Add(new OfferteInfo((int)reader["offerte_id"]));
+                    klanten[(int)reader["id"]].Offertes.Add(new OfferteInfo((int)reader["offerte_id"], BerekenPrijs((int)reader["offerte_id"])));
                 }
             }
 
@@ -276,6 +276,7 @@ namespace DL_Data
 
         public List<Product> LeesProductenOfferte(int offerteId)
         {
+
             List<Product> producten = new List<Product>();
             string SQL = "select p.id, p.naam_nl, p.naam_w, p.prijs, p.beschrijving from offerte o\r\njoin bestelling b on o.id = b.offerte_id\r\njoin product p on p.id = b.product_id\r\nwhere o.id = @offerte_id;";
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -324,6 +325,28 @@ namespace DL_Data
                 }
                 return product;
             }
+        }
+
+        public double BerekenPrijs(int offerte_id)
+        {
+            double prijs = 0;
+            string SQL = "select round(\r\n    case\r\n        when sum(p.prijs * b.aantal) > 5000 then sum(p.prijs * b.aantal) * 0.9\r\n        when sum(p.prijs * b.aantal) > 2000 then sum(p.prijs * b.aantal) * 0.95\r\n        else sum(p.prijs * b.aantal)\r\n    end\r\n    + case \r\n        when o.afhaal = 0 and sum(p.prijs * b.aantal) < 500 then 100\r\n        when o.afhaal = 0 and sum(p.prijs * b.aantal) between 500 and 1000 then 50\r\n        else 0\r\n    end\r\n    + case\r\n        when o.aanleg = 1 and sum(p.prijs * b.aantal) > 5000 then sum(p.prijs * b.aantal) * 0.05 \r\n        when o.aanleg = 1 and sum(p.prijs * b.aantal) > 2000 then sum(p.prijs * b.aantal) * 0.10\r\n        when o.aanleg = 1 and sum(p.prijs * b.aantal) <= 2000 then sum(p.prijs * b.aantal) * 0.15\r\n        else 0\r\n    end\r\n, 2) as totaal\r\nfrom bestelling b\r\njoin product p on p.id = b.product_id\r\njoin offerte o on o.id = b.offerte_id\r\nwhere b.offerte_id = @offerte_id group by o.afhaal, o.aanleg\r\n";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                conn.Open();
+                cmd.CommandText = SQL;
+                cmd.Parameters.Add("@offerte_id", SqlDbType.Int);
+                cmd.Parameters["@offerte_id"].Value = offerte_id;
+                IDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prijs = (double)reader["totaal"];
+                }
+            }
+
+            return prijs;
         }
     }
 }

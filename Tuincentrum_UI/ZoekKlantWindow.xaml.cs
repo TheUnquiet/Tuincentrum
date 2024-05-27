@@ -41,7 +41,7 @@ namespace Tuincentrum_UI
             if (gevondenKlanten.Count == 1) 
             {
                 Klant gevondenKlant = gevondenKlanten[0];
-                KlantResultWindow krw = new(gevondenKlant, gevondenKlant.Offertes);
+                KlantResultWindow krw = new(gevondenKlant);
                 krw.Show();
             } else if (gevondenKlanten.Count > 0)
             {

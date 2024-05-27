@@ -37,7 +37,7 @@ namespace Tuincentrum_UI
             if (KlantenListbox.SelectedItem != null)
             {
                 Klant selectedKlant = (Klant)KlantenListbox.SelectedItem;
-                KlantResultWindow krw = new(selectedKlant, selectedKlant.Offertes);
+                KlantResultWindow krw = new(selectedKlant);
                 krw.Show();
             }
         }

@@ -39,7 +39,7 @@ namespace BL.Models
 
         public override string? ToString()
         {
-            return $"{Id} {Datum} {KlantNummer} {Afhaal} {Aanleg} {AantalProducten}";
+            return $"{Id} {Datum.Date} {KlantNummer} {Afhaal} {Aanleg} {AantalProducten}";
         }
     }
 }
