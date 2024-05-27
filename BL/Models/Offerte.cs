@@ -16,6 +16,7 @@ namespace BL.Models
         public bool Aanleg;
         public int AantalProducten;
         public float Prijs;
+        public List<Product> producten = new List<Product>();
 
         public Offerte(int id, DateTime datum, int klantNr,  bool afhaal, bool aanleg, int aantalProducten)
         {

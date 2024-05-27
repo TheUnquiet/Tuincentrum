@@ -25,9 +25,14 @@ namespace BL.Managers
                 List<Bestelling> bestellingenObjecten = fileprocessor.MaakBestellingen(bestellingen);
                 foreach (Bestelling b in bestellingenObjecten)
                 {
-                    if (!tuincentrumRepository.HeeftBestelling(b)) tuincentrumRepository.SchrijfBestelling(b);
+                    Product product = tuincentrumRepository.LeesProduct(b.Product_Id);
+                    if (product != null)
+                    {
+                        if (!tuincentrumRepository.HeeftBestelling(b)) tuincentrumRepository.SchrijfBestelling(b);
+                    }
                 }
-            } catch (Exception ex) { throw new TuincentrumException($"UploadBestellingen - {ex.Message}", ex); }
+            } 
+            catch (Exception ex) { throw new TuincentrumException($"UploadBestellingen - {ex.Message}", ex); }
         }
 
         public void UploadKlanten(string filename)
@@ -65,7 +70,13 @@ namespace BL.Managers
                 List<Product> productObjecten = fileprocessor.MaakProducten(producten);
                 foreach (Product p in productObjecten)
                 {
-                    if (!tuincentrumRepository.HeeftProduct(p)) tuincentrumRepository.SchrijfProduct(p);
+                    try
+                    {
+                        if (!tuincentrumRepository.HeeftProduct(p)) tuincentrumRepository.SchrijfProduct(p);
+                    } catch (TuincentrumException)
+                    {
+                        continue;
+                    }
                 }
             } catch (Exception ex) { throw new TuincentrumException($"UploadProduct - {ex.Message}", ex); }
         }

@@ -9,7 +9,6 @@
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -20,8 +19,6 @@
         <TextBlock Margin="5" Text="Zoek een klant:" Grid.Column="0" Grid.Row="0"/>
         <TextBlock Margin="5" Grid.Row="1" Grid.Column="0" Text="Naam:"/>
         <TextBox Margin="5" Grid.Row="2" Grid.Column="0" Name="ZoekNaam"/>
-        <TextBlock Margin="5" Grid.Row="1" Grid.Column="1" Text="Adres:"/>
-        <TextBox Margin="5" Grid.Row="2" Grid.Column="1" Name="ZoekAdres"/>
         <Button Margin="5" Grid.Row="3" Content="Zoek" Grid.ColumnSpan="2" Click="ZoekKlantButtonClick"/>
     </Grid>
 </Window>

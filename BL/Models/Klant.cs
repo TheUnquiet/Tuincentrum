@@ -1,4 +1,5 @@
 ﻿using BL.Exceptions;
+using BL.Models.DTOS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace BL.Models
 {
     public class Klant
     {
-        public readonly List<Offerte> offertes;
+        public readonly List<OfferteInfo> Offertes = new List<OfferteInfo>();
         public int? Id;
 
         private string naam;

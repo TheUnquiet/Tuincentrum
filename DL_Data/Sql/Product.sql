@@ -1,8 +1,22 @@
-CREATE TABLE [dbo].[Product]
-(
-	[id] INT NOT NULL PRIMARY KEY,
-	[naam_nl] NVARCHAR(255) NOT NULL,
-	[naam_w] NVARCHAR(255) NOT NULL,
-	[prijs] FLOAT NOT NULL,
-	[beschrijving] NVARCHAR(255) NOT NULL
-)
+BEGIN TRANSACTION;
+
+BEGIN TRY
+	IF OBJECT_ID('dbo.Product', 'U') IS NOT NULL
+	BEGIN
+		DROP TABLE dbo.Product
+	END
+
+	CREATE TABLE [dbo].[Product]
+	(
+		[id] INT NOT NULL PRIMARY KEY IDENTITY,
+		[naam_nl] NVARCHAR(255) NOT NULL,
+		[naam_w] NVARCHAR(255) NOT NULL,
+		[prijs] FLOAT NOT NULL,
+		[beschrijving] NVARCHAR(255) NOT NULL
+	)
+
+	COMMIT
+END TRY
+BEGIN CATCH
+	ROLLBACK;
+END CATCH;

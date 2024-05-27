@@ -9,6 +9,7 @@ using BL.Interfaces;
 using BL.Models;
 using BL.Exceptions;
 using System.Numerics;
+using BL.Models.DTOS;
 
 namespace DL_Data
 {
@@ -154,7 +155,7 @@ namespace DL_Data
                     cmd.Parameters["@aantal_producten"].Value = offerte.AantalProducten;
                     cmd.ExecuteNonQuery();
                 }
-                catch (Exception ex) { throw new TuincentrumException($"SchijfKlant -{ex.Message} "); }
+                catch (Exception ex) { throw new TuincentrumException($"SchijfOfferte -{ex.Message} "); }
             }
         }
 
@@ -204,47 +205,124 @@ namespace DL_Data
                     cmd.Parameters["@beschrijving"].Value = product.Beschrijving;
                     cmd.ExecuteNonQuery();
                 }
-                catch (Exception ex) { throw new TuincentrumException($"SchijfKlant -{ex.Message} "); }
+                catch (TuincentrumException)
+                {
+                    return;
+                }
+                catch (Exception ex) { throw new TuincentrumException($"SchijfProduct -{ex.Message} ");
+                }
+
             }
         }
 
-        public Dictionary<string, Klant> LeesKlanten()
+        public List<Klant> LeesKlanten(string naam)
         {
-            string SQL = "select * from klant";
-            Dictionary<string, Klant> klanten = new Dictionary<string, Klant>();
+            naam = $"%{naam}%";
+            string SQL = "select k.id, k.naam, k.adres, o.id as 'offerte_id' from klant k left join offerte o on o.klantnummer = k.id where k.naam like @naam";
+            Dictionary<int, Klant> klanten = new();
+            
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlCommand cmd = conn.CreateCommand())
             {
                 conn.Open();
                 cmd.CommandText = SQL;
+                cmd.Parameters.Add("@naam", SqlDbType.NVarChar);
+                cmd.Parameters["@naam"].Value = naam;
                 IDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    string naamAdres = (string)reader["naam"] + (string)reader["adres"];
-                    klanten.Add(naamAdres, new Klant((int)reader["id"], (string)reader["naam"], (string)reader["adres"]));
+                    if (!klanten.ContainsKey((int)reader["id"]))
+                    {
+                        klanten.Add((int)reader["id"], new Klant(
+                            (int)reader["id"], 
+                            (string)reader["naam"], 
+                            (string)reader["adres"]));
+                    }
+
+                    klanten[(int)reader["id"]].Offertes.Add(new OfferteInfo((int)reader["offerte_id"]));
                 }
             }
 
-            return klanten;
+            return klanten.Values.ToList();
         }
 
-        public List<Offerte> LeesOffertesVoorKlant(Klant k)
+        public Offerte LeesOfferte(int id)
         {
-            string SQL = "select * from offerte where klantnummer=@klantnummer";
-            List<Offerte> offertes = new List<Offerte>();
+            Offerte offerte = null;
+            string SQL = "select o.id, o.datum, o.klantnummer, o.afhaal, o.aanleg, o.aantal_producten from offerte o where o.id=@offerte_id";
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlCommand cmd = conn.CreateCommand())
             {
                 conn.Open();
                 cmd.CommandText = SQL;
-                cmd.Parameters.Add("@klantnummer", SqlDbType.Int);
-                cmd.Parameters["@klantnummer"].Value = k.Id;
+                cmd.Parameters.Add("@offerte_id", SqlDbType.Int);
+                cmd.Parameters["@offerte_id"].Value= id;
+                IDataReader reader = cmd.ExecuteReader();
+                
+                while (reader.Read()) 
+                {
+                    offerte = new(
+                        (int)reader["id"],
+                        (DateTime)reader["datum"],
+                        (int)reader["klantnummer"],
+                        (bool)reader["afhaal"],
+                        (bool)reader["aanleg"],
+                        (int)reader["aantal_producten"]);
+                }
+            }
+
+            return offerte;
+        }
+
+        public List<Product> LeesProductenOfferte(int offerteId)
+        {
+            List<Product> producten = new List<Product>();
+            string SQL = "select p.id, p.naam_nl, p.naam_w, p.prijs, p.beschrijving from offerte o\r\njoin bestelling b on o.id = b.offerte_id\r\njoin product p on p.id = b.product_id\r\nwhere o.id = @offerte_id;";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                conn.Open();
+                cmd.CommandText = SQL;
+                cmd.Parameters.Add("@offerte_id", SqlDbType.Int);
+                cmd.Parameters["@offerte_id"].Value = offerteId;
                 IDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    offertes.Add(new Offerte((int)reader["id"], (DateTime)reader["datum"], (int)reader["klantnummer"], (bool)reader["afhaal"], (bool)reader["aanleg"], (int)reader["aantal_producten"]));
+                    Product product = new(
+                            (int)reader["id"],
+                            (string)reader["naam_nl"],
+                            (string)reader["naam_w"],
+                            (double)reader["prijs"],
+                            (string)reader["beschrijving"]);
+                    producten.Add(product);
                 }
-                return offertes;
+
+                return producten;
+            }
+        }
+
+        public Product LeesProduct(int id)
+        {
+            Product product = null;
+            string SQL = "select * from product where id=@id";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                conn.Open();
+                cmd.CommandText = SQL;
+                cmd.Parameters.Add("@id", SqlDbType.Int);
+                cmd.Parameters["@id"].Value = id;
+                IDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    product = new(
+                        (int)reader["id"],
+                        (string)reader["naam_nl"],
+                        (string)reader["naam_w"],
+                        (double)reader["prijs"],
+                        (string)reader["beschrijving"]);
+                }
+                return product;
             }
         }
     }

@@ -1,6 +1,11 @@
-﻿using BL.Models;
+﻿using BL.Interfaces;
+using BL.Managers;
+using BL.Models;
+using BL.Models.DTOS;
+using DL_Data;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,19 +24,35 @@ namespace Tuincentrum_UI
     /// Interaction logic for KlantResultWindow.xaml
     /// </summary>
     public partial class KlantResultWindow : Window
-    {
-        public KlantResultWindow(Klant k, List<Offerte> offertesKlant)
+    {   
+        private Klant klant;
+        private ITuincentrumRepository tuincentrumRepository;
+        private TuincentrumManager tuincentrumManager;
+        public KlantResultWindow(Klant k, List<OfferteInfo> offertesKlant)
         {
             InitializeComponent();
-            IdTextBox.Text = k.Id.ToString();
-            NaamTextBox.Text = k.Naam;
-            AdresTextBox.Text = k.Adres;
+            IdTextBox.Text += k.Id.ToString();
+            NaamTextBox.Text += k.Naam;
+            AdresTextBox.Text += k.Adres;
             OffertesListBox.ItemsSource = offertesKlant;
+            klant = k;
+            tuincentrumRepository = new TuincentrumRepository(ConfigurationManager.ConnectionStrings["TuincentrumDBConnectionLaptop"].ToString());
+            tuincentrumManager = new TuincentrumManager(tuincentrumRepository);
         }
 
         private void ButtonClickClose(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
+        }
+
+        private void OfferteDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (OffertesListBox.SelectedItem != null)
+            {
+                OfferteInfo offerteInfo = (OfferteInfo)OffertesListBox.SelectedItem;
+                OfferteDetailsWindow ofdw = new OfferteDetailsWindow(tuincentrumManager.GeefOfferte(offerteInfo.Id), klant);
+                ofdw.ShowDialog();
+            }
         }
     }
 }

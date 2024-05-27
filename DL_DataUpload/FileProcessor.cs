@@ -130,6 +130,10 @@ namespace DL_DataUpload
                 foreach (string product in productenLijst)
                 {
                     string[] strings = product.Split('|');
+                    if (string.IsNullOrWhiteSpace(strings[1]))
+                    {
+                        continue;
+                    }
                     Product p = new(strings[1], strings[2], float.Parse(strings[3]), strings[4]);
                     producten.Add(p);
                 }

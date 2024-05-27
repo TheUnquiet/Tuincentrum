@@ -36,16 +36,21 @@ namespace Tuincentrum_UI
         private void ZoekKlantButtonClick(object sender, RoutedEventArgs e)
         {
             string naam = null;
-            string adres = null;
             if (!string.IsNullOrWhiteSpace(ZoekNaam.Text)) naam = ZoekNaam.Text;
-            if (!string.IsNullOrWhiteSpace(ZoekAdres.Text)) adres = ZoekAdres.Text;
-            Klant gevondenKlant = tuincentrumManager.ZoekKlant(naam, adres);
-            if (gevondenKlant == null) MessageBox.Show("Klant niet gevonden");
-            else
+            List<Klant> gevondenKlanten = tuincentrumManager.GeefKlanten(naam);
+            if (gevondenKlanten.Count == 1) 
             {
-                var offertes = tuincentrumManager.GeefOffertesVoorKlant(gevondenKlant);
-                KlantResultWindow krw = new(gevondenKlant, offertes);
+                Klant gevondenKlant = gevondenKlanten[0];
+                KlantResultWindow krw = new(gevondenKlant, gevondenKlant.Offertes);
                 krw.Show();
+            } else if (gevondenKlanten.Count > 0)
+            {
+                GevondenKlantenWindow gk = new(gevondenKlanten);
+                gk.Show();
+
+            } else
+            {
+                MessageBox.Show($"Klant: {ZoekNaam.Text} niet gevonden.");
             }
         }
     }

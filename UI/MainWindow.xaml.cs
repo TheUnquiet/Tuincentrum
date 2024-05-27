@@ -40,7 +40,7 @@ namespace UI
             folderDialog.InitialDirectory = @"C:\data";
 
             fileProcessor = new FileProcessor();
-            tuincentrumRepository = new TuincentrumRepository(ConfigurationManager.ConnectionStrings["TuincentrumDBConnectionDesktop"].ToString());
+            tuincentrumRepository = new TuincentrumRepository(ConfigurationManager.ConnectionStrings["TuincentrumDBConnectionLaptop"].ToString());
             fileManager = new FileManager(fileProcessor);
             uploadManager = new UploadManager(tuincentrumRepository, fileProcessor);
         }
@@ -83,12 +83,12 @@ namespace UI
             try
             {
                 fileManager.ProcessZip(SourceFileTextBox.Text, DestinationFolderTextBox.Text);
-                uploadManager.UploadKlanten(DestinationFolderTextBox.Text + "\\" + ZipFileListBox.Items[0]);
+               // uploadManager.UploadKlanten(DestinationFolderTextBox.Text + "\\" + ZipFileListBox.Items[0]);
                 uploadManager.UploadOffertes(DestinationFolderTextBox.Text + "\\" + ZipFileListBox.Items[1]);
                 uploadManager.UploadProducten(DestinationFolderTextBox.Text + "\\" + ZipFileListBox.Items[3]);
                 uploadManager.UploadBestellingen(DestinationFolderTextBox.Text + "\\" + ZipFileListBox.Items[2]);
 
-                MessageBox.Show("Upload klaar!");
+                MessageBox.Show("Upload klaar!", "Melding", MessageBoxButton.OK, MessageBoxImage.Asterisk);
 
             } catch (Exception ex)
             {

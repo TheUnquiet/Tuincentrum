@@ -1,4 +1,5 @@
 ﻿using BL.Models;
+using BL.Models.DTOS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,9 @@ namespace BL.Interfaces
         void SchrijfKlant(Klant klant);
         void SchrijfOfferte(Offerte o);
         void SchrijfProduct(Product p);
-        Dictionary<string, Klant> LeesKlanten();
-        public List<Offerte> LeesOffertesVoorKlant(Klant k);
+        List<Klant> LeesKlanten(string naam);
+        public Offerte LeesOfferte(int id);
+        public List<Product> LeesProductenOfferte(int offerteId);
+        public Product LeesProduct(int id);
     }
 }

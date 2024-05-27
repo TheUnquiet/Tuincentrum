@@ -1,0 +1,25 @@
+﻿<Window x:Class="Tuincentrum_UI.OfferteDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Tuincentrum_UI"
+        mc:Ignorable="d"
+        Title="Offerte Details" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Name="OfferteTextBlock" Text="Datum: " HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Name="KlantTextBlock" HorizontalAlignment="Center"/>
+        <ListBox Grid.Row="1" Grid.ColumnSpan="2" Name="OfferteDetailsListBox"/>
+        <Button Grid.Row="2" Margin="5" Content="Nieuwe Offerte" Click="NieuweOfferteButtonClick" />
+        <Button Grid.Row="2" Grid.Column="1" Margin="5" Content="Sluit Offerte" Click="CloseButtonClick" />
+    </Grid>
+</Window>
