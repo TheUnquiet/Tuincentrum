@@ -274,11 +274,36 @@ namespace DL_Data
             return offerte;
         }
 
+        public Offerte LeesLaatsteOfferte()
+        {
+            Offerte offerte = null;
+            string SQL = "select top 1 * from offerte order by id desc";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                conn.Open();
+                cmd.CommandText= SQL;
+                IDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    offerte = new Offerte(
+                        (int)reader["id"],
+                        (DateTime)reader["datum"],
+                        (int)reader["klantnummer"],
+                        (bool)reader["afhaal"],
+                        (bool)reader["aanleg"],
+                        (int)reader["aantal_producten"]
+                        );
+                }
+
+                return offerte;
+            }
+        }
+
         public List<Product> LeesProductenOfferte(int offerteId)
         {
-
             List<Product> producten = new List<Product>();
-            string SQL = "select p.id, p.naam_nl, p.naam_w, p.prijs, p.beschrijving from offerte o\r\njoin bestelling b on o.id = b.offerte_id\r\njoin product p on p.id = b.product_id\r\nwhere o.id = @offerte_id;";
+            string SQL = "select p.id, p.naam_nl, p.naam_w, p.prijs, p.beschrijving, b.aantal from offerte o\r\njoin bestelling b on o.id = b.offerte_id\r\njoin product p on p.id = b.product_id\r\nwhere o.id = @offerte_id;";
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlCommand cmd = conn.CreateCommand())
             {
@@ -294,7 +319,8 @@ namespace DL_Data
                             (string)reader["naam_nl"],
                             (string)reader["naam_w"],
                             (double)reader["prijs"],
-                            (string)reader["beschrijving"]);
+                            (string)reader["beschrijving"],
+                            (int)reader["aantal"]);
                     producten.Add(product);
                 }
 
@@ -347,6 +373,30 @@ namespace DL_Data
             }
 
             return prijs;
+        }
+
+        public List<Product> LeesProducten()
+        {
+            List<Product> producten = new List<Product>();
+            string SQL = "select * from product";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                conn.Open();
+                cmd.CommandText = SQL;
+                IDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    producten.Add(new Product(
+                        (int)reader["id"],
+                        (string)reader["naam_nl"],
+                        (string)reader["naam_w"],
+                        (double)reader["prijs"],
+                        (string)reader["beschrijving"]));
+                }
+
+                return producten;
+            }
         }
     }
 }

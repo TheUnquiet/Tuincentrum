@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tuincentrum_UI"
         mc:Ignorable="d"
-        Title="KlantResultWindow" Height="450" Width="800">
+        Title="Alle Offertes" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -16,11 +16,13 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Name="IdTextBox" Text="Klantnummer: " Margin="5"/>
         <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Name="NaamTextBox" Text="Naam: " Margin="5"/>
         <TextBlock Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" Name="AdresTextBox" Text="Adres: " Margin="5"/>
         <ListBox Grid.Row="1" Grid.ColumnSpan="3" Margin="5" Name="OffertesListBox" MouseDoubleClick="OfferteDoubleClick"/>
-        <Button Grid.Row="2" Grid.ColumnSpan="3" Margin="5" Content="Sluit" Click="ButtonClickClose"/>
+        <Button Grid.Row="3" Grid.ColumnSpan="3" Margin="5" Content="Sluit" Click="ButtonClickClose"/>
+        <Button Grid.Row="2" Grid.ColumnSpan="3" Margin="5" Content="Nieuwe Offerte" Click="NieuwOfferteButtonClick" Grid.Column="0"/>
     </Grid>
 </Window>

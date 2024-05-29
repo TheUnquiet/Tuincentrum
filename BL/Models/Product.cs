@@ -10,6 +10,7 @@ namespace BL.Models
     public class Product
     {
         public int? Id;
+        public string ProductNaarString => ToString();
         private string naam_nl;
         public string Naam_nl
         {
@@ -20,16 +21,28 @@ namespace BL.Models
                 naam_nl = value;
             }
         }
+        private string naam_w;
         public string Naam_W {  
-            get { return naam_nl; }
+            get { return naam_w; }
             set
             {
-                if (string.IsNullOrWhiteSpace(value)) throw new TuincentrumException("Naam nl is leeg");
+                if (string.IsNullOrWhiteSpace(value)) throw new TuincentrumException("Naam w is leeg");
                 naam_nl = value;
             }
         }
-        public double Prijs;
-        public string Beschrijving;
+        public double Prijs { get; set; }
+        public string Beschrijving {  get; set; }
+        public int Aantal {  get; set; }
+
+        public Product(int id, string naam_nl, string naam_W, double prijs, string beschrijving, int aantal)
+        {
+            Id = id;
+            Naam_nl = naam_nl;
+            Naam_W = naam_W;
+            Prijs = prijs;
+            Beschrijving = beschrijving;
+            Aantal = aantal;
+        }
 
         public Product(int id, string naam_nl, string naam_W, double prijs, string beschrijving)
         {
@@ -40,17 +53,23 @@ namespace BL.Models
             Beschrijving = beschrijving;
         }
 
-        public Product(string naam_nl, string naam_W, double prijs, string beschrijving)
+        public Product(string naam_nl, string naam_W, double prijs, string beschrijving, int aantal)
         {
             Naam_nl = naam_nl;
             Naam_W = naam_W;
             Prijs = prijs;
             Beschrijving = beschrijving;
+            Aantal = aantal;
         }
 
         public override string ToString()
         {
-            return $"Product nummer : {Id} Naam nl :  {Naam_nl} Wetenschappelijke Naam : {Naam_W} Prijs :  {Prijs} Beschrijver : {Beschrijving}";
+            return $"{Naam_nl} {Naam_W} {Beschrijving} €{Math.Round(Prijs, 2)}";
+        }
+
+        public string ToonProductEnAantal()
+        {
+            return $"{Naam_nl} {Naam_W} {Beschrijving} €{Math.Round(Prijs, 2)} x {Aantal}";
         }
     }
 }

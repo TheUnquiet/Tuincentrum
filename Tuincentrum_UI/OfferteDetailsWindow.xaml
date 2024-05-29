@@ -16,10 +16,9 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Name="OfferteTextBlock" Text="Datum: " HorizontalAlignment="Center"/>
-        <TextBlock Grid.Row="0" Grid.Column="1" Name="KlantTextBlock" HorizontalAlignment="Center"/>
-        <ListBox Grid.Row="1" Grid.ColumnSpan="2" Name="OfferteDetailsListBox"/>
-        <Button Grid.Row="2" Margin="5" Content="Nieuwe Offerte" Click="NieuweOfferteButtonClick" />
-        <Button Grid.Row="2" Grid.Column="1" Margin="5" Content="Sluit Offerte" Click="CloseButtonClick" />
+        <TextBlock Grid.Row="0" Name="OfferteTextBlock" Text="Datum: " HorizontalAlignment="Center" Margin="5"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Klant: " Name="KlantTextBlock" HorizontalAlignment="Center" Margin="5"/>
+        <ListBox Grid.Row="1" Grid.ColumnSpan="2" Name="OfferteDetailsListBox" Margin="5"/>
+        <Button Grid.Row="2" Grid.Column="0" Margin="5" Grid.ColumnSpan="2" Content="Sluit Offerte" Click="CloseButtonClick" />
     </Grid>
 </Window>

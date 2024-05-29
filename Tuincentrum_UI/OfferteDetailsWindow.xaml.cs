@@ -24,22 +24,22 @@ namespace Tuincentrum_UI
     /// </summary>
     public partial class OfferteDetailsWindow : Window
     {
-        private ITuincentrumRepository tuincentrumRepository;
-        private TuincentrumManager tuincentrumManager;
+        private Klant Klant;
 
         public OfferteDetailsWindow(Offerte offerte, Klant klant)
         {
             InitializeComponent();
-            OfferteTextBlock.Text += offerte.Datum;
-            OfferteDetailsListBox.ItemsSource = offerte.producten;
-            KlantTextBlock.Text = klant.ToString();
-            tuincentrumRepository = new TuincentrumRepository(ConfigurationManager.ConnectionStrings["TuincentrumDBConnectionLaptop"].ToString());
-            tuincentrumManager = new TuincentrumManager(tuincentrumRepository);
+            OfferteTextBlock.Text += offerte.Datum.ToString("dd/MM/yyyy");
+            OfferteDetailsListBox.ItemsSource = offerte.producten.Select(p => p.ToonProductEnAantal());
+            KlantTextBlock.Text += klant.ToString();
+            
+            Klant = klant;
         }
 
         private void NieuweOfferteButtonClick(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Mannetje!", "Mannetje");
+            NieuweOfferteWindow no = new NieuweOfferteWindow(Klant);
+            no.Show();
         }
 
         private void CloseButtonClick(object sender, RoutedEventArgs e)

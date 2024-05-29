@@ -47,12 +47,15 @@ namespace Tuincentrum_UI
 
         private void OfferteDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (OffertesListBox.SelectedItem != null)
-            {
-                OfferteInfo offerteInfo = (OfferteInfo)OffertesListBox.SelectedItem;
-                OfferteDetailsWindow ofdw = new OfferteDetailsWindow(tuincentrumManager.GeefOfferte(offerteInfo.Id), klant);
-                ofdw.ShowDialog();
-            }
+            OfferteInfo offerteInfo = (OfferteInfo)OffertesListBox.SelectedItem;
+            OfferteDetailsWindow ofdw = new OfferteDetailsWindow(tuincentrumManager.GeefOfferte(offerteInfo.Id), klant);
+            ofdw.ShowDialog();
+        }
+
+        private void NieuwOfferteButtonClick(object sender, RoutedEventArgs e)
+        {
+            NieuweOfferteWindow n = new NieuweOfferteWindow(klant);
+            n.ShowDialog();
         }
     }
 }

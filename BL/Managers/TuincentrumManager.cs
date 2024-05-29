@@ -41,6 +41,50 @@ namespace BL.Managers
                 
             } catch (Exception ex) { throw new TuincentrumException($"GeefOfferte - {ex.Message}", ex); }
         }
+
+        public List<Product> GeefProducten()
+        {
+            try
+            {
+                return tuincentrumRepository.LeesProducten();
+            } catch (Exception ex) { throw new TuincentrumException($"GeefProducten - {ex.Message}", ex); }
+        }
+
+        public Product GeefProduct(int id)
+        {
+            try
+            {
+                return tuincentrumRepository.LeesProduct(id);
+            }catch (Exception ex) { throw new TuincentrumException($"GeefProduct - {ex.Message}", ex); }
+        }
+
+        public void UploadOfferte(Offerte o)
+        {
+            tuincentrumRepository.SchrijfOfferte(o);
+        }
+
+        public void UploadBestelling(Bestelling b)
+        {
+            tuincentrumRepository.SchrijfBestelling(b);
+        }
+
+        public Offerte GeefLaatsteOfferte()
+        {
+            try
+            {
+                return tuincentrumRepository.LeesLaatsteOfferte();
+            } catch (Exception ex) { throw new TuincentrumException($"GeefLaatsteOfferte - {ex.Message}", ex); }
+        }
+
+        public double GeefPrijsOfferte(List<Product> producten)
+        {
+            if (producten == null || !producten.Any())
+            {
+                return 0;
+            }
+
+            return producten.Sum(product => product.Prijs);
+        }
     }
 }
 

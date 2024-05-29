@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tuincentrum_UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Tuincentrum" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -15,7 +15,11 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Wat wilt u doen?" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10"/>
-        <Button Content="Klanten Zoeken" Grid.Row="1" HorizontalAlignment="Center" Margin="5" Click="ZoekKlantButtonClick"/>
+        <TextBlock Text="Wat wilt u doen?" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Klanten Zoeken" HorizontalAlignment="Center" Margin="5" Padding="4" Click="ZoekKlantButtonClick"/>
+            <Button Content="Zoek Offerte" HorizontalAlignment="Center" Margin="5" Padding="4" Click="ZoekOfferteButtonClick" />
+            <Button Content="Nieuwe Offerte" HorizontalAlignment="Center" Margin="5" Padding="4" Click="NieuweOfferteButtonCLick" />
+        </StackPanel>
     </Grid>
 </Window>

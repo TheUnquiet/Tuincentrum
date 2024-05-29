@@ -10,7 +10,7 @@ namespace BL.Models
 {
     public class Klant
     {
-        public readonly List<OfferteInfo> Offertes = new List<OfferteInfo>();
+        public List<OfferteInfo> Offertes = new List<OfferteInfo>();
         public int? Id;
 
         private string naam;

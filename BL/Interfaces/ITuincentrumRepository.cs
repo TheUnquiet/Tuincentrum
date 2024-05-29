@@ -19,8 +19,10 @@ namespace BL.Interfaces
         void SchrijfOfferte(Offerte o);
         void SchrijfProduct(Product p);
         List<Klant> LeesKlanten(string naam);
-        public Offerte LeesOfferte(int id);
-        public List<Product> LeesProductenOfferte(int offerteId);
-        public Product LeesProduct(int id);
+        Offerte LeesOfferte(int id);
+        List<Product> LeesProductenOfferte(int offerteId);
+        Product LeesProduct(int id);
+        List<Product> LeesProducten();
+        public Offerte LeesLaatsteOfferte();
     }
 }
