@@ -27,7 +27,7 @@ namespace BL.Models
             set
             {
                 if (string.IsNullOrWhiteSpace(value)) throw new TuincentrumException("Naam w is leeg");
-                naam_nl = value;
+                naam_w = value;
             }
         }
         public double Prijs { get; set; }
@@ -61,6 +61,15 @@ namespace BL.Models
             Beschrijving = beschrijving;
             Aantal = aantal;
         }
+
+        public Product(string naam_nl, string naam_W, double prijs, string beschrijving)
+        {
+            Naam_nl = naam_nl;
+            Naam_W = naam_W;
+            Prijs = prijs;
+            Beschrijving = beschrijving;
+        }
+
 
         public override string ToString()
         {

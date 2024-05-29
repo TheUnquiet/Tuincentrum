@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
         <TextBlock Margin="5" Text="Zoek een offerte:" Grid.Column="0" Grid.Row="0"/>
         <TextBlock Margin="5" Grid.Row="1" Grid.Column="0" Text="Offertenummer:"/>
-        <TextBox Margin="5" Grid.Row="2" Grid.Column="0" Name="ZoekNaam"/>
+        <TextBox Margin="5" Grid.Row="2" Grid.Column="0" Name="IdTextBox"/>
         <Button Margin="5" Grid.Row="3" Content="Zoek" Grid.ColumnSpan="2" Click="ZoekOfferteButtonClick"/>
     </Grid>
 </Window>

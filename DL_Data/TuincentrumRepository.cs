@@ -269,7 +269,10 @@ namespace DL_Data
                         (bool)reader["aanleg"],
                         (int)reader["aantal_producten"]);
                 }
+
             }
+
+            LeesKlantVoorOfferte(offerte);
 
             return offerte;
         }
@@ -396,6 +399,48 @@ namespace DL_Data
                 }
 
                 return producten;
+            }
+        }
+
+        public Klant LeesKlant(int id)
+        {
+            Klant klant = null;
+            string SQL = "select * from klant where id=@id";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                conn.Open();
+                cmd.CommandText = SQL;
+                cmd.Parameters.Add("@id", SqlDbType.Int);
+                cmd.Parameters["@id"].Value = id;
+                IDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    klant = new(
+                        (int)(reader["id"]),
+                        (string)reader["naam"],
+                        (string)reader["adres"]
+                        );
+                }
+                return klant;
+            }
+        }
+
+        public void LeesKlantVoorOfferte(Offerte offerte)
+        {
+            string SQL = "select k.id, k.naam, k.adres from offerte o where o.id = @id";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                conn.Open();
+                cmd.CommandText = SQL;
+                cmd.Parameters.Add("@id", SqlDbType.Int);
+                cmd.Parameters["@id"].Value = offerte.Id;
+                IDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    offerte.klant = new Klant((int)reader["id"], (string)reader["naam"], (string)reader["adres"]);
+                }
             }
         }
     }

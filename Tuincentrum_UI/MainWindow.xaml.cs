@@ -41,12 +41,8 @@ namespace Tuincentrum_UI
 
         private void ZoekOfferteButtonClick(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void NieuweOfferteButtonCLick(object sender, RoutedEventArgs e)
-        {
-
+            ZoekOfferte zoek = new ZoekOfferte();
+            zoek.Show();
         }
     }
 }

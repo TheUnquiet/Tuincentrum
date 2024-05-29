@@ -1,5 +1,6 @@
 ﻿using BL.Interfaces;
 using BL.Managers;
+using BL.Models;
 using DL_Data;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,16 @@ namespace Tuincentrum_UI
 
         private void ZoekOfferteButtonClick(object sender, RoutedEventArgs e)
         {
-
+            Offerte o = tuincentrumManager.GeefOfferte(int.Parse(IdTextBox.Text));
+            if (o != null)
+            {
+                OfferteDetailsWindow odw = new OfferteDetailsWindow(o, tuincentrumManager.GeefKlant(o.KlantNummer));
+                odw.Show();
+            }
+            else
+            {
+                MessageBox.Show("Offerte niet gevonden", "Notification");
+            }
         }
     }
 }

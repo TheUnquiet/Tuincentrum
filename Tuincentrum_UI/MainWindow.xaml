@@ -19,7 +19,6 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="Klanten Zoeken" HorizontalAlignment="Center" Margin="5" Padding="4" Click="ZoekKlantButtonClick"/>
             <Button Content="Zoek Offerte" HorizontalAlignment="Center" Margin="5" Padding="4" Click="ZoekOfferteButtonClick" />
-            <Button Content="Nieuwe Offerte" HorizontalAlignment="Center" Margin="5" Padding="4" Click="NieuweOfferteButtonCLick" />
         </StackPanel>
     </Grid>
 </Window>

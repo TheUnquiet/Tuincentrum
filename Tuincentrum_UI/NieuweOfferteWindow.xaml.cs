@@ -28,15 +28,14 @@ namespace Tuincentrum_UI
     /// </summary>
     public partial class NieuweOfferteWindow : Window
     {
-        private ObservableCollection<Product> AlleProducten {  get; set; }
-        private ObservableCollection<Product> GeselecteerdeProducten { get; set; }
+        private ObservableCollection<Product> AlleProducten;
+        private ObservableCollection<Product> GeselecteerdeProducten;
         private TuincentrumManager tuincentrumManager;
         private ITuincentrumRepository tuincentrumRepository;
 
         public NieuweOfferteWindow(Klant k)
         {
             InitializeComponent();
-            DataContext = this;
 
             tuincentrumRepository = new TuincentrumRepository(ConfigurationManager.ConnectionStrings["TuincentrumDBConnectionLaptop"].ToString());
             tuincentrumManager = new TuincentrumManager(tuincentrumRepository);
@@ -63,7 +62,6 @@ namespace Tuincentrum_UI
         {
             double prijs = tuincentrumManager.GeefPrijsOfferte(GeselecteerdeProducten.ToList());
             PrijsTextBlock.Text = $"Prijs : €{prijs}";
-
         }
 
         private void OpslaanEnSluitenButtonClick(object sender, RoutedEventArgs e)
@@ -89,7 +87,6 @@ namespace Tuincentrum_UI
                 Bestelling b = new Bestelling(offerte.Id.Value, group.productId.Value, group.Count);
                 tuincentrumManager.UploadBestelling(b);
             }
-
 
             Close();
         }

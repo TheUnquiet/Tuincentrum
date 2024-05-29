@@ -28,6 +28,14 @@ namespace BL.Managers
             } catch (Exception ex) { throw new TuincentrumException($"GeefKlanten - {ex.Message}", ex); }
         }
 
+        public Klant GeefKlant(int id)
+        {
+            try
+            {
+                return tuincentrumRepository.LeesKlant(id);
+            } catch (Exception ex) { throw new TuincentrumException($"GeefKlant - {ex.Message}", ex); }
+        }
+
         public Offerte GeefOfferte(int id)
         {
             try

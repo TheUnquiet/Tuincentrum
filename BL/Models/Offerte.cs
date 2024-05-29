@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BL.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -11,12 +12,17 @@ namespace BL.Models
     {
         public int? Id;
         public DateTime Datum;
-        public int KlantNummer;
+        private int klantnummer;
+        public int KlantNummer { 
+            get { return klantnummer; }
+            set { if (value <= 0) throw new TuincentrumException("Klantnummer is niet geldig"); klantnummer = value; }
+        }
         public bool Afhaal;
         public bool Aanleg;
         public int AantalProducten;
         public float Prijs;
         public List<Product> producten = new List<Product>();
+        public Klant klant;
 
         public Offerte(int id, DateTime datum, int klantNr,  bool afhaal, bool aanleg, int aantalProducten)
         {

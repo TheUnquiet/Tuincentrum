@@ -11,9 +11,11 @@ namespace BL.Models
     public class Klant
     {
         public List<OfferteInfo> Offertes = new List<OfferteInfo>();
+        
         public int? Id;
 
         private string naam;
+        
         public string Naam { 
             get { return naam; } 
             private set { 
@@ -24,6 +26,7 @@ namespace BL.Models
         }
 
         private string adres;
+        
         public string Adres
         {
             get { return adres; }

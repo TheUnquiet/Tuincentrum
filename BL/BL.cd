@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BL.Models.Product">
+    <Position X="0.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACBAAAAgAACAAEAAAAAAAAAAAAIgAAACAAAAEgAAA=</HashCode>
+      <FileName>Models\Product.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BL.Models.Offerte">
+    <Position X="3.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAQCgAAAAAAAEQAAAAAAAAAACIAAAAAAAAAAACgA=</HashCode>
+      <FileName>Models\Offerte.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="producten" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BL.Models.Klant">
+    <Position X="6.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAEAAAABAAAAAwAAAAIAAAAAAAQAAA=</HashCode>
+      <FileName>Models\Klant.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="Offertes" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BL.Models.Bestelling">
+    <Position X="8" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Models\Bestelling.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BL.Models.DTOS.OfferteInfo">
+    <Position X="9.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAEAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\DTOS\OfferteInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

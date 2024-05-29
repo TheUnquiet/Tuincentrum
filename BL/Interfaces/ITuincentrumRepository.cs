@@ -24,5 +24,6 @@ namespace BL.Interfaces
         Product LeesProduct(int id);
         List<Product> LeesProducten();
         public Offerte LeesLaatsteOfferte();
+        Klant LeesKlant(int id);
     }
 }
