@@ -12,32 +12,27 @@ namespace BL.Models
     {
         public int? Id;
         public DateTime Datum;
-        private int klantnummer;
-        public int KlantNummer { 
-            get { return klantnummer; }
-            set { if (value <= 0) throw new TuincentrumException("Klantnummer is niet geldig"); klantnummer = value; }
-        }
         public bool Afhaal;
         public bool Aanleg;
         public int AantalProducten;
         public float Prijs;
         public List<Product> producten = new List<Product>();
-        public Klant klant;
+        public Klant Klant;
 
-        public Offerte(int id, DateTime datum, int klantNr,  bool afhaal, bool aanleg, int aantalProducten)
+        public Offerte(int id, DateTime datum, Klant klant,  bool afhaal, bool aanleg, int aantalProducten)
         {
             Id = id;
             Datum = datum;
-            KlantNummer = klantNr;
+            Klant = klant;
             Afhaal = afhaal;
             Aanleg = aanleg;
             AantalProducten = aantalProducten;
         }
 
-        public Offerte(DateTime datum, int klantNr, bool afhaal, bool aanleg, int aantalProducten)
+        public Offerte(DateTime datum, Klant klant, bool afhaal, bool aanleg, int aantalProducten)
         {
             Datum = datum;
-            KlantNummer = klantNr;
+            Klant = klant;
             Afhaal = afhaal;
             Aanleg = aanleg;
             AantalProducten = aantalProducten;
@@ -45,7 +40,7 @@ namespace BL.Models
 
         public override string? ToString()
         {
-            return $"Offerte nummer : {Id} Datum : {Datum.Date} Klantnummer : {KlantNummer} Afhaal : {Afhaal} Aanleg : {Aanleg} Aantal producten : {AantalProducten}";
+            return $"Offerte nummer : {Id} Datum : {Datum.Date} Klantnummer : {Klant.Id} Afhaal : {Afhaal} Aanleg : {Aanleg} Aantal producten : {AantalProducten}";
         }
     }
 }

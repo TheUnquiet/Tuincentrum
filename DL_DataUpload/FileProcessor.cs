@@ -56,7 +56,6 @@ namespace DL_DataUpload
         public List<string> Readfile(string fileName)
         {
             List<string> results = new List<string>();
-            string file = "*" + fileName + "*";
             using (StreamReader sr = new StreamReader(fileName))
             {
                 string line;

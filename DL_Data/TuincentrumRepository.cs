@@ -24,7 +24,7 @@ namespace DL_Data
 
         public bool HeeftBestelling(Bestelling bestelling)
         {
-            string SQL = "select count(*) from bestelling where offerte_id=@offerte_id and product_id=@product_id";
+            string SQL = "SELECT COUNT(*) FROM offerte_product WHERE offerte_id=@offerte_id AND product_id=@product_id";
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlCommand cmd = conn.CreateCommand())
             {
@@ -43,9 +43,9 @@ namespace DL_Data
             }
         }
 
-        public void SchrijfBestelling(Bestelling bestelling)
+        public void SchrijfBestelling(Offerte offerte)
         {
-            string SQL = "insert into Bestelling(offerte_id, product_id, aantal) values(@offerte_id, @product_id, @aantal)";
+            string SQL = "BEGIN TRANSACTION;\r\n\r\nBEGIN TRY\r\n\r\n\tINSERT INTO offerte_product(offerte_id, product_id, aantal) VALUES(@offerte_id, @product_id, @aantal)\r\n\r\n\tCOMMIT\r\nEND TRY\r\nBEGIN CATCH\r\n\tROLLBACK;\r\nEND CATCH;";
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlCommand cmd = conn.CreateCommand())
             {
@@ -56,9 +56,12 @@ namespace DL_Data
                     cmd.Parameters.Add(new SqlParameter("@offerte_id", SqlDbType.Int));
                     cmd.Parameters.Add(new SqlParameter("@product_id", SqlDbType.Int));
                     cmd.Parameters.Add(new SqlParameter("@aantal", SqlDbType.Int));
-                    cmd.Parameters["@offerte_id"].Value = bestelling.Offerte_Id;
-                    cmd.Parameters["@product_id"].Value = bestelling.Product_Id;
-                    cmd.Parameters["@aantal"].Value = bestelling.Aantal_Product;
+                    cmd.Parameters["@offerte_id"].Value = offerte.Id;
+                    foreach (Product p in offerte.producten)
+                    {
+                        cmd.Parameters["@product_id"].Value = p.Id;
+                        cmd.Parameters["@aantal"].Value = offerte.producten[p.Id];
+                    }
                     cmd.ExecuteNonQuery();
                 }
                 catch (Exception ex) { throw new TuincentrumException($"SchijfKlant -{ex.Message} "); }
@@ -67,7 +70,7 @@ namespace DL_Data
 
         public bool HeeftKlant(Klant klant)
         {
-            string SQL = "select count(*) from klant where naam=@naam and adres=@adres";
+            string SQL = "SELECT COUNT(*) FROM klant WHERE naam=@naam AND adres=@adres";
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlCommand cmd = conn.CreateCommand())
             {
@@ -269,10 +272,7 @@ namespace DL_Data
                         (bool)reader["aanleg"],
                         (int)reader["aantal_producten"]);
                 }
-
             }
-
-            LeesKlantVoorOfferte(offerte);
 
             return offerte;
         }
