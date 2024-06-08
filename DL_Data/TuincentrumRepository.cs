@@ -128,7 +128,7 @@ namespace DL_Data
         public List<Klant> LeesKlanten(string naam)
         {
             naam = $"%{naam}%";
-            string SQL = "select k.id, k.naam, k.adres, o.id as 'offerte_id', o.datum, o.aanleg, o.afhaal, o.aantal_producten, o.klantnummer from klant k \r\nleft join offerte o on o.klantnummer = k.id where k.naam like @naam";
+            string SQL = "select k.id, k.naam, k.adres, o.id as 'offerte_id', o.datum, o.aanleg, o.afhaal, o.aantal_producten, o.klantnummer from klant k left join offerte o on o.klantnummer = k.id \r\nwhere k.naam like @naam";
             Dictionary<int, Klant> klanten = new();
             
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -141,6 +141,7 @@ namespace DL_Data
                 IDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    int klantId = (int)reader["id"];
                     if (!klanten.ContainsKey((int)reader["id"]))
                     {
                         klanten.Add((int)reader["id"], new Klant(
@@ -149,16 +150,19 @@ namespace DL_Data
                             (string)reader["adres"]));
                     }
 
-                    Offerte o = new Offerte(
-                            (int)reader["offerte_id"],
-                            (DateTime)reader["datum"],
-                            (bool)reader["afhaal"],
-                            (bool)reader["aanleg"],
-                            (int)reader["aantal_producten"],
-                            klanten[(int)reader["id"]]);
-                    o.RekenAf();
+                    if (reader["offerte_id"] != DBNull.Value)
+                    {
+                        Offerte o = new Offerte(
+                                (int)reader["offerte_id"],
+                                (DateTime)reader["datum"],
+                                (bool)reader["afhaal"],
+                                (bool)reader["aanleg"],
+                                (int)reader["aantal_producten"],
+                                klanten[klantId]);
+                        o.RekenAf();
 
-                    klanten[(int)reader["id"]].Offertes.Add(o);
+                        klanten[klantId].Offertes.Add(o);
+                    }
                 }
             }
 
@@ -267,34 +271,6 @@ namespace DL_Data
 
             offerte.RekenAf();
             return offerte;
-        }
-
-        public Offerte LeesLaatsteOfferte()
-        {
-            Offerte offerte = null;
-            string SQL = "select top 1 * from offerte order by id desc";
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = conn.CreateCommand())
-            {
-                conn.Open();
-                cmd.CommandText= SQL;
-                IDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    /*
-                    offerte = new Offerte(
-                        (int)reader["id"],
-                        (DateTime)reader["datum"],
-                        (int)reader["klantnummer"],
-                        (bool)reader["afhaal"],
-                        (bool)reader["aanleg"],
-                        (int)reader["aantal_producten"]
-                        );
-                    */
-                }
-
-                return offerte;
-            }
         }
 
         public List<Product> LeesAlleProducten()

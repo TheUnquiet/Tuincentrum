@@ -19,10 +19,12 @@ namespace BL.Interfaces
 
         List<string> Readfile(string filename);
 
-        List<Klant> MaakKlanten(List<string> klantenLijst);
+        public List<Klant> MaakKlanten(List<string> klantenLijst);
 
-        List<Offerte> MaakOffertes(List<string> offerteLijst, List<Klant> klanten);
+        public List<Product> MaakProducten(List<string> productenLijst);
 
-        List<Product> MaakProducten(List<string> productenLijst);
+        public List<Offerte> MaakOffertes(List<string> offertesLijst, List<Klant> klanten);
+
+        public void LeesOfferteEnProducten(List<Offerte> offertes, List<Product> producten, string filename);
     }
 }

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace BL.Models
 {
-    public class DataLists
+    public class Data
     {
-        public List<Klant> Klanten {  get; set; }
-        public List<Offerte> Offertes { get; set; }
-        public List<Product> Producten { get; set; }
+        public Dictionary<int, Klant> Klanten {  get; set; }
+        public Dictionary<int, Offerte> Offertes { get; set; }
+        public Dictionary<int, Product> Producten { get; set; }
 
-        public DataLists()
+        public Data()
         {
             Klanten = new();
             Offertes = new();

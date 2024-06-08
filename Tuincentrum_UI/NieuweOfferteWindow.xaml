@@ -45,11 +45,11 @@
         <RadioButton Content="Ja" Name="AanlegJaRadioButton" Margin="5" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center"
              Checked="AanlegJaRadioButton_Checked" GroupName="AanlegGroup"/>
         <RadioButton Content="Nee" Name="AanlegNeeRadioButton" Margin="5" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center"
-             Checked="AanlegNeeRadioButton_Checked" GroupName="AanlegGroup"/>
+             Checked="AanlegNeeRadioButton_Checked" GroupName="AanlegGroup" IsChecked="True"/>
         <RadioButton Content="Ja" Name="AfhaalJaRadioButton" Margin="5" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Center"
              Checked="AfhaalJaRadioButton_Checked" GroupName="AfhaalGroup"/>
         <RadioButton Content="Nee" Name="AfhaalNeeRadioButton" Margin="5" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Center"
-             Checked="AfhaalNeeRadioButton_Checked" GroupName="AfhaalGroup"/>
+             Checked="AfhaalNeeRadioButton_Checked" GroupName="AfhaalGroup" IsChecked="True"/>
 
 
         <TextBlock Text="Prijs: " Grid.Column="0" Grid.Row="5" Margin="5" Name="PrijsTextBlock"/>

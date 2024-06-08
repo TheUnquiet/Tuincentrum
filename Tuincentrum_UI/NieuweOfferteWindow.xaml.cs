@@ -65,7 +65,7 @@ namespace Tuincentrum_UI
             offerte.RekenAf();
             PrijsTextBlock.Text = $"Prijs: €{offerte.Prijs}";
         }
-        
+
         private void OpslaanEnSluitenButtonClick(object sender, RoutedEventArgs e)
         {
             offerte.AantalProducten = offerte.BerekenTotaleAantalProducten();
@@ -81,6 +81,11 @@ namespace Tuincentrum_UI
         private void VerwijderAlleProductenButtonClick(object sender, RoutedEventArgs e)
         {
             GeselecteerdeProducten.Clear();
+            foreach (var p in offerte.Producten)
+            {
+                offerte.VerwijderProduct(p.Key, p.Value);
+            }
+            UpdatePrijsText();
         }
 
         private void VerwijderProductenButtonClick(object sender, RoutedEventArgs e)
@@ -95,9 +100,17 @@ namespace Tuincentrum_UI
                 {
                     int aantal = aw.Aantal;
                     offerte.VerwijderProduct(v, aantal);
-                }
 
-                GeselecteerdeProducten.Remove(v);
+                    if (offerte.Producten.ContainsKey(v))
+                    {
+                        MessageBox.Show($"{aantal} verwijderd, U heeft nog {offerte.Producten[v]} over", "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        GeselecteerdeProducten.Remove(v);
+                        MessageBox.Show($"Alles verwijderd", "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
             }
         }
 
@@ -107,7 +120,7 @@ namespace Tuincentrum_UI
             {
                 int aantal = 0;
                 AantalWindow aw = new AantalWindow();
-                
+
                 if (aw.ShowDialog() == true)
                 {
                     aantal = aw.Aantal;
@@ -131,27 +144,38 @@ namespace Tuincentrum_UI
 
         private void AanlegJaRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            offerte.Aanleg = true;
-            UpdatePrijsText();
+            if (offerte != null)
+            {
+                offerte.Aanleg = true;
+                UpdatePrijsText();
+            }
         }
 
         private void AanlegNeeRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            offerte.Aanleg = false; 
-            UpdatePrijsText();
+            if (offerte != null)
+            {
+                offerte.Aanleg = false;
+                UpdatePrijsText();
+            }
         }
 
         private void AfhaalJaRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            offerte.Afhaal = true;
-            UpdatePrijsText();
+            if (offerte != null)
+            {
+                offerte.Afhaal = true;
+                UpdatePrijsText();
+            }
         }
 
         private void AfhaalNeeRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            offerte.Afhaal = false;
-            UpdatePrijsText();
+            if (offerte != null)
+            {
+                offerte.Afhaal = false;
+                UpdatePrijsText();
+            }
         }
-
     }
 }

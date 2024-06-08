@@ -11,57 +11,42 @@ namespace BL.Managers
         private ITuincentrumRepository tuincentrumRepository;
         private IFileProcessor fileprocessor;
 
-        public UploadManager(ITuincentrumRepository tuincentrumRepository, IFileProcessor fileManager)
+        public UploadManager(ITuincentrumRepository tuincentrumRepository, IFileProcessor fileprocessor)
         {
             this.tuincentrumRepository = tuincentrumRepository;
-            this.fileprocessor = fileManager;
+            this.fileprocessor = fileprocessor;
         }
 
         public void UploadKlanten(string filename)
         {
-            try
+            var klanten = fileprocessor.MaakKlanten(fileprocessor.Readfile(filename));
+
+            foreach (var k in klanten)
             {
-                List<string> klanten = fileprocessor.Readfile(filename);
-                List<Klant> klantObjecten = fileprocessor.MaakKlanten(klanten);
-                foreach (Klant k in klantObjecten)
-                {
-                    tuincentrumRepository.SchrijfKlant(k);
-                }
-            } catch (Exception ex) { throw new TuincentrumException($"UploadKlanten - {ex.Message}", ex); }
+                tuincentrumRepository.SchrijfKlant(k);
+            }
         }
-        /*
-        public void UploadOffertes(string filename)
-        {
-            try
-            {
-                List<string> offertes = fileprocessor.Readfile(filename);
-                List<Offerte> offerteObjecten = fileprocessor.MaakOffertes(offertes);
-                foreach (Offerte o in offerteObjecten)
-                {
-                    tuincentrumRepository.SchrijfOfferte(o);
-                }
-            } catch (Exception ex) { throw new TuincentrumException($"UplpadOffertes - {ex.Message}", ex); }
-            
-        }
-        */
 
         public void UploadProducten(string filename)
         {
-            try
+            var producten = fileprocessor.MaakProducten(fileprocessor.Readfile(filename));
+            foreach (var p in producten)
             {
-                List<string> producten = fileprocessor.Readfile(filename);
-                List<Product> productObjecten = fileprocessor.MaakProducten(producten);
-                foreach (Product p in productObjecten)
-                {
-                    try
-                    {
-                        tuincentrumRepository.SchrijfProduct(p);
-                    } catch (TuincentrumException)
-                    {
-                        continue;
-                    }
-                }
-            } catch (Exception ex) { throw new TuincentrumException($"UploadProduct - {ex.Message}", ex); }
+                tuincentrumRepository.SchrijfProduct(p);
+            }
+        }
+
+        public void UploadOffertes(string filenameOffertes, string filenameRelatie)
+        {
+            var klanten = tuincentrumRepository.LeesKlanten("");
+            var producten = tuincentrumRepository.LeesAlleProducten();
+            var offertes = fileprocessor.MaakOffertes(fileprocessor.Readfile(filenameOffertes), klanten);
+            fileprocessor.LeesOfferteEnProducten(offertes, producten, filenameRelatie);
+
+            foreach (var offerte in offertes)
+            {
+                tuincentrumRepository.SchrijfOfferteEnProducten(offerte);
+            }
         }
     }
 }

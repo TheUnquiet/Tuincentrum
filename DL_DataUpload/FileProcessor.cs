@@ -67,21 +67,6 @@ namespace DL_DataUpload
             return results;
         }
 
-        public DataLists ProcessData(string klantPath, string offertePath, string productenPath)
-        {
-            DataLists dataLists = new();
-
-            var klanten = Readfile(klantPath);
-            var offertes = Readfile(offertePath);
-            var producten = Readfile(productenPath);
-
-            dataLists.Klanten = MaakKlanten(klanten);
-            //dataLists.Offertes = MaakOffertes(offertes);
-            dataLists.Producten = MaakProducten(producten);
-
-            return dataLists;
-        }
-
         public List<Klant> MaakKlanten(List<string> klantenLijst)
         {
             try
@@ -96,35 +81,10 @@ namespace DL_DataUpload
 
                 }
                 return klanten;
-            } catch (Exception ex) { throw new TuincentrumException($"MaakKlanten - {ex.Message}", ex); }
-        }
-        
-        public List<Offerte> MaakOffertes(List<string> offertesLijst, List<Klant> klanten)
-        {
-            try
-            {
-                List<Offerte> offertes = new();
-                foreach (string offerte in offertesLijst)
-                {
-                    string[] strings = offerte.Split('|');
-                    int klantId = int.Parse(strings[2]);
-                    Klant klant = klanten.FirstOrDefault(k => k.Id == klantId);
-
-                    Offerte o = new(
-                        DateTime.Parse(strings[1]),
-                        bool.Parse(strings[3]),
-                        bool.Parse(strings[4]),
-                        int.Parse(strings[5]),
-                        klant
-                        );
-                    offertes.Add(o);
-                }
-
-                return offertes;
             }
-            catch (Exception ex) { throw new FileExcpetion($"MaakOffertes - {ex.Message}", ex); }
+            catch (Exception ex) { throw new TuincentrumException($"MaakKlanten - {ex.Message}", ex); }
         }
-        
+
         public List<Product> MaakProducten(List<string> productenLijst)
         {
             try
@@ -144,6 +104,48 @@ namespace DL_DataUpload
                 return producten;
             }
             catch (Exception ex) { throw new FileExcpetion($"MaakProducten - {ex.Message}", ex); }
+        }
+
+        public List<Offerte> MaakOffertes(List<string> offertesLijst, List<Klant> klanten)
+        {
+            List<Offerte> offertes = new();
+            foreach (string s in offertesLijst)
+            {
+                string[] strings = s.Split('|');
+                var klant = klanten.Find(k => k.Id == int.Parse(strings[2]));
+
+                Offerte o = new Offerte(
+                    DateTime.Parse(strings[1]),
+                    bool.Parse(strings[3]),
+                    bool.Parse(strings[4]),
+                    int.Parse(strings[5]),
+                    klant
+                );
+
+                offertes.Add(o);
+            }
+
+            return offertes;
+        }
+
+        public void LeesOfferteEnProducten(List<Offerte> offertes, List<Product> producten, string filename)
+        {
+            var lines = Readfile(filename);
+            foreach (var line in lines)
+            {
+                string[] strings = line.Split('|');
+                var offerteId = int.Parse(strings[0]);
+                var productId = int.Parse(strings[1]);
+                var quantity = int.Parse(strings[2]);
+
+                var offerte = offertes.Find(o => o.Id == offerteId);
+                var product = producten.Find(p => p.Id == productId);
+
+                if (offerte != null && product != null)
+                {
+                    offerte.VoegProduct(product, quantity);
+                }
+            }
         }
     }
 }

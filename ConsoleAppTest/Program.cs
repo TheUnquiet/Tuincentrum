@@ -14,7 +14,8 @@ class Program
         TuincentrumRepository tr = new(ConfigurationManager.ConnectionStrings["TuincentrumDBConnectionLaptop"].ToString());
         TuincentrumManager tm = new(tr);
 
-        Offerte offerte1 = tr.LeesOfferte(1);
+        // Offerte offerte1 = tr.LeesOfferte(1);
+
         /*
         Console.WriteLine(offerte1 + "\n");
         foreach (var p in offerte1.Producten)
@@ -25,11 +26,16 @@ class Program
         Console.WriteLine(offerte1.Klant);
         Console.WriteLine(offerte1.Prijs);
         */
-        // Zoek product
+
+        /* Zoek product
         var res = tm.GeefProduct("Dwerg");
         foreach (var p in res)
         {
             Console.WriteLine(p.Naam_nl);
         }
+
+        */
+
+        Console.WriteLine(tr.LeesKlanten("").Count);
     }
 }
