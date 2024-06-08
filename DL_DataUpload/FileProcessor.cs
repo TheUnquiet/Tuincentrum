@@ -115,6 +115,7 @@ namespace DL_DataUpload
                 var klant = klanten.Find(k => k.Id == int.Parse(strings[2]));
 
                 Offerte o = new Offerte(
+                    int.Parse(strings[0]),
                     DateTime.Parse(strings[1]),
                     bool.Parse(strings[3]),
                     bool.Parse(strings[4]),
