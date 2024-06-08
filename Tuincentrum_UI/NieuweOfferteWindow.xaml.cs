@@ -1,7 +1,6 @@
 ﻿using BL.Interfaces;
 using BL.Managers;
 using BL.Models;
-using BL.Models.DTOS;
 using DL_Data;
 using System;
 using System.Collections.Generic;
@@ -32,6 +31,7 @@ namespace Tuincentrum_UI
         private ObservableCollection<Product> GeselecteerdeProducten;
         private TuincentrumManager tuincentrumManager;
         private ITuincentrumRepository tuincentrumRepository;
+        private Offerte offerte;
 
         public NieuweOfferteWindow(Klant k)
         {
@@ -44,49 +44,36 @@ namespace Tuincentrum_UI
             KlantIdTextBlock.Text = k.Id.ToString();
             KlantNaamTextBlock.Text = k.Naam;
             KlantAdresTextBlock.Text = k.Adres;
-            AlleProducten = new ObservableCollection<Product>(tuincentrumManager.GeefProducten());
+            AlleProducten = new ObservableCollection<Product>(tuincentrumManager.GeefAlleProducten());
 
             GeselecteerdeProducten = new ObservableCollection<Product>();
             GeselecteerdeProducten.CollectionChanged += GeselecteerdeProducten_CollectionChanged;
 
             AlleProductenListBox.ItemsSource = AlleProducten;
             GeselecteerdeProductenListBox.ItemsSource = GeselecteerdeProducten;
-            UpdateTotalePrijs();
+
+            offerte = new(DateTime.Parse(DatumTextBlock.Text), false, false, 0, k);
         }
+
         private void GeselecteerdeProducten_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            UpdateTotalePrijs();
+            UpdatePrijsText();
         }
 
-        private void UpdateTotalePrijs()
+        private void UpdatePrijsText()
         {
-            double prijs = tuincentrumManager.GeefPrijsOfferte(GeselecteerdeProducten.ToList());
-            PrijsTextBlock.Text = $"Prijs : €{prijs}";
+            offerte.RekenAf();
+            PrijsTextBlock.Text = $"Prijs: €{offerte.Prijs}";
         }
-
+        
         private void OpslaanEnSluitenButtonClick(object sender, RoutedEventArgs e)
         {
-            bool aanleg, afhaal;
-            if ((bool)AanlegRadioButton.IsChecked) aanleg = true; else aanleg = false;
-            if ((bool)AfhaalRadioButton.IsChecked) afhaal = true; else afhaal = false;
-            
-            Offerte offerte = new(DateTime.Now, int.Parse(KlantIdTextBlock.Text), afhaal, aanleg, GeselecteerdeProducten.Count);
-            tuincentrumManager.UploadOfferte(offerte);
-            offerte = tuincentrumManager.GeefLaatsteOfferte();
+            offerte.AantalProducten = offerte.BerekenTotaleAantalProducten();
+            offerte.RekenAf(); // to be sure
 
-            var aantal_producten = GeselecteerdeProducten
-                .GroupBy(product => product.Id)
-                .Select(group => new
-                {
-                    productId = group.Key,
-                    Count = group.Count()
-                });
+            tuincentrumManager.UploadOfferteEnProducten(offerte);
 
-            foreach (var group in aantal_producten)
-            {
-                Bestelling b = new Bestelling(offerte.Id.Value, group.productId.Value, group.Count);
-                tuincentrumManager.UploadBestelling(b);
-            }
+            MessageBox.Show("Offerte opgeslagen en gesloten", "Succes");
 
             Close();
         }
@@ -102,26 +89,69 @@ namespace Tuincentrum_UI
             foreach (Product v in GeselecteerdeProductenListBox.SelectedItems) producten.Add(v);
             foreach (Product v in producten)
             {
-                GeselecteerdeProducten.Remove(v);
-            }
-        }
+                AantalWindow aw = new AantalWindow();
 
-        private void VoegAlleProductenButtonClick(object sender, RoutedEventArgs e)
-        {
-            foreach (Product v in AlleProducten)
-            {
-                GeselecteerdeProducten.Add(v);
+                if (aw.ShowDialog() == true)
+                {
+                    int aantal = aw.Aantal;
+                    offerte.VerwijderProduct(v, aantal);
+                }
+
+                GeselecteerdeProducten.Remove(v);
             }
         }
 
         private void VoegProductButtonClick(object sender, RoutedEventArgs e)
         {
-            List<Product> producten = new();
-            foreach (Product p in AlleProductenListBox.SelectedItems) producten.Add(p);
-            foreach (Product p in producten)
+            foreach (Product p in AlleProductenListBox.SelectedItems)
             {
-                GeselecteerdeProducten.Add(p);
+                int aantal = 0;
+                AantalWindow aw = new AantalWindow();
+                
+                if (aw.ShowDialog() == true)
+                {
+                    aantal = aw.Aantal;
+                    offerte.VoegProduct(p, aantal);
+                }
+
+                GeselecteerdeProducten.Add(p); // just for show
             }
         }
+
+        private void ZoekProductButtonClick(object sender, RoutedEventArgs e)
+        {
+            AlleProductenListBox.ItemsSource = tuincentrumManager.GeefProduct(ZoekProductTextBox.Text);
+        }
+
+        private void FilterWissenButtonClick(object sender, RoutedEventArgs e)
+        {
+            ZoekProductTextBox.Text = "";
+            AlleProductenListBox.ItemsSource = AlleProducten;
+        }
+
+        private void AanlegJaRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            offerte.Aanleg = true;
+            UpdatePrijsText();
+        }
+
+        private void AanlegNeeRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            offerte.Aanleg = false; 
+            UpdatePrijsText();
+        }
+
+        private void AfhaalJaRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            offerte.Afhaal = true;
+            UpdatePrijsText();
+        }
+
+        private void AfhaalNeeRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            offerte.Afhaal = false;
+            UpdatePrijsText();
+        }
+
     }
 }

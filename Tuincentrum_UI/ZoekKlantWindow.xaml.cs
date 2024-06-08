@@ -38,17 +38,20 @@ namespace Tuincentrum_UI
             string naam = null;
             if (!string.IsNullOrWhiteSpace(ZoekNaam.Text)) naam = ZoekNaam.Text;
             List<Klant> gevondenKlanten = tuincentrumManager.GeefKlanten(naam);
+
             if (gevondenKlanten.Count == 1) 
             {
                 Klant gevondenKlant = gevondenKlanten[0];
                 KlantResultWindow krw = new(gevondenKlant);
                 krw.Show();
-            } else if (gevondenKlanten.Count > 0)
+            } 
+            else if (gevondenKlanten.Count > 0)
             {
                 GevondenKlantenWindow gk = new(gevondenKlanten);
                 gk.Show();
 
-            } else
+            } 
+            else
             {
                 MessageBox.Show($"Klant: {ZoekNaam.Text} niet gevonden.");
             }

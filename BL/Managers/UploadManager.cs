@@ -17,24 +17,6 @@ namespace BL.Managers
             this.fileprocessor = fileManager;
         }
 
-        public void UploadBestellingen(string filename)
-        {
-            try
-            {
-                List<string> bestellingen = fileprocessor.Readfile(filename);
-                List<Bestelling> bestellingenObjecten = fileprocessor.MaakBestellingen(bestellingen);
-                foreach (Bestelling b in bestellingenObjecten)
-                {
-                    Product product = tuincentrumRepository.LeesProduct(b.Product_Id);
-                    if (product != null)
-                    {
-                        if (!tuincentrumRepository.HeeftBestelling(b)) tuincentrumRepository.SchrijfBestelling(b);
-                    }
-                }
-            } 
-            catch (Exception ex) { throw new TuincentrumException($"UploadBestellingen - {ex.Message}", ex); }
-        }
-
         public void UploadKlanten(string filename)
         {
             try
@@ -43,11 +25,11 @@ namespace BL.Managers
                 List<Klant> klantObjecten = fileprocessor.MaakKlanten(klanten);
                 foreach (Klant k in klantObjecten)
                 {
-                    if (!tuincentrumRepository.HeeftKlant(k)) tuincentrumRepository.SchrijfKlant(k);
+                    tuincentrumRepository.SchrijfKlant(k);
                 }
             } catch (Exception ex) { throw new TuincentrumException($"UploadKlanten - {ex.Message}", ex); }
         }
-
+        /*
         public void UploadOffertes(string filename)
         {
             try
@@ -61,6 +43,7 @@ namespace BL.Managers
             } catch (Exception ex) { throw new TuincentrumException($"UplpadOffertes - {ex.Message}", ex); }
             
         }
+        */
 
         public void UploadProducten(string filename)
         {
@@ -72,7 +55,7 @@ namespace BL.Managers
                 {
                     try
                     {
-                        if (!tuincentrumRepository.HeeftProduct(p)) tuincentrumRepository.SchrijfProduct(p);
+                        tuincentrumRepository.SchrijfProduct(p);
                     } catch (TuincentrumException)
                     {
                         continue;

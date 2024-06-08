@@ -21,21 +21,37 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <TextBlock Text="Klantnummer : " Name="KlantIdTextBlock" Grid.Column="0" Grid.Row="0" Margin="5" HorizontalAlignment="Center"/>
         <TextBlock Text="Naam : " Name="KlantNaamTextBlock" Grid.Column="1" Grid.Row="0" Margin="5" HorizontalAlignment="Center"/>
         <TextBlock Text="Naam : " Name="KlantAdresTextBlock" Grid.Column="2" Grid.Row="0" Margin="5" HorizontalAlignment="Center"/>
         <TextBlock Text="Datum : " Name="DatumTextBlock" Grid.Column="3" Grid.Row="0" Margin="5" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
-        <TextBlock Text="Alle Producten" Grid.Column="0" Grid.Row="1" Margin="5" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
+        <TextBox Name="ZoekProductTextBox" Grid.Row="1" Grid.Column="0" Margin="5"/>
+        <Button Margin="5" Grid.Column="1" Grid.Row="1" Content="Zoek Product" Click="ZoekProductButtonClick"/>
         <TextBlock Text="Geselcteerde Producten" Grid.Column="2" Grid.Row="1" Margin="5" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
         <ListBox Grid.Row="2" Grid.Column="0" Name="AlleProductenListBox" Margin="5" Grid.ColumnSpan="2" SelectionMode="Extended"/>
         <ListBox Name="GeselecteerdeProductenListBox" Grid.Row="2" Grid.Column="2" Margin="5" Grid.ColumnSpan="2" SelectionMode="Extended"/>
-        <Button Content=">>" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="3" Margin="5" Padding="4" Click="VoegAlleProductenButtonClick"/>
+
+        <Button Content="Filter wissen" Margin="5" Grid.Column="0" Grid.Row="3" Click="FilterWissenButtonClick"/>
         <Button Content=">" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="3" Margin="5" Padding="4" Click="VoegProductButtonClick"/>
         <Button Content="&lt;&lt;" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="3" Margin="5" Padding="4" Click="VerwijderAlleProductenButtonClick"/>
         <Button Content="&lt;" HorizontalAlignment="Center" Grid.Column="3" Grid.Row="3" Margin="5" Padding="4" Click="VerwijderProductenButtonClick"/>
-        <RadioButton Content="Afhaal" Name="AfhaalRadioButton" Margin="5" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
-        <RadioButton Content="Aanleg" Name="AanlegRadioButton" Margin="5" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+
+        <TextBlock Text="Aanleg:" Grid.Column="0" Grid.Row="4" Margin="5"/>
+
+        <TextBlock Text="Afhaal:" Grid.Column="2" Grid.Row="4" Margin="5"/>
+
+        <RadioButton Content="Ja" Name="AanlegJaRadioButton" Margin="5" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center"
+             Checked="AanlegJaRadioButton_Checked" GroupName="AanlegGroup"/>
+        <RadioButton Content="Nee" Name="AanlegNeeRadioButton" Margin="5" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center"
+             Checked="AanlegNeeRadioButton_Checked" GroupName="AanlegGroup"/>
+        <RadioButton Content="Ja" Name="AfhaalJaRadioButton" Margin="5" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Center"
+             Checked="AfhaalJaRadioButton_Checked" GroupName="AfhaalGroup"/>
+        <RadioButton Content="Nee" Name="AfhaalNeeRadioButton" Margin="5" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Center"
+             Checked="AfhaalNeeRadioButton_Checked" GroupName="AfhaalGroup"/>
+
+
         <TextBlock Text="Prijs: " Grid.Column="0" Grid.Row="5" Margin="5" Name="PrijsTextBlock"/>
         <Button Content="Opslaan &amp; Sluit" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="4" Margin="5" Click="OpslaanEnSluitenButtonClick"/>
     </Grid>

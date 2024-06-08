@@ -67,6 +67,21 @@ namespace DL_DataUpload
             return results;
         }
 
+        public DataLists ProcessData(string klantPath, string offertePath, string productenPath)
+        {
+            DataLists dataLists = new();
+
+            var klanten = Readfile(klantPath);
+            var offertes = Readfile(offertePath);
+            var producten = Readfile(productenPath);
+
+            dataLists.Klanten = MaakKlanten(klanten);
+            //dataLists.Offertes = MaakOffertes(offertes);
+            dataLists.Producten = MaakProducten(producten);
+
+            return dataLists;
+        }
+
         public List<Klant> MaakKlanten(List<string> klantenLijst)
         {
             try
@@ -83,24 +98,8 @@ namespace DL_DataUpload
                 return klanten;
             } catch (Exception ex) { throw new TuincentrumException($"MaakKlanten - {ex.Message}", ex); }
         }
-
-        public List<Bestelling> MaakBestellingen(List<string> bestellingenLijst)
-        {
-            try
-            {
-                List<Bestelling> bestellingen = new();
-                foreach (string bestelling in bestellingenLijst)
-                {
-                    string[] strings = bestelling.Split('|');
-                    Bestelling b = new(int.Parse(strings[0]), int.Parse(strings[1]), int.Parse(strings[2]));
-
-                    bestellingen.Add(b);
-                }
-                return bestellingen;
-            } catch (Exception ex) { throw new TuincentrumException($"MaakBestelling - {ex.Message}", ex); }
-        }
         
-        public List<Offerte> MaakOffertes(List<string> offertesLijst)
+        public List<Offerte> MaakOffertes(List<string> offertesLijst, List<Klant> klanten)
         {
             try
             {
@@ -108,11 +107,16 @@ namespace DL_DataUpload
                 foreach (string offerte in offertesLijst)
                 {
                     string[] strings = offerte.Split('|');
-                    Offerte o = new(DateTime.Parse(strings[1]),
-                        int.Parse(strings[2]),
+                    int klantId = int.Parse(strings[2]);
+                    Klant klant = klanten.FirstOrDefault(k => k.Id == klantId);
+
+                    Offerte o = new(
+                        DateTime.Parse(strings[1]),
                         bool.Parse(strings[3]),
                         bool.Parse(strings[4]),
-                        int.Parse(strings[5]));
+                        int.Parse(strings[5]),
+                        klant
+                        );
                     offertes.Add(o);
                 }
 

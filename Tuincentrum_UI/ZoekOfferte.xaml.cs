@@ -35,10 +35,11 @@ namespace Tuincentrum_UI
 
         private void ZoekOfferteButtonClick(object sender, RoutedEventArgs e)
         {
+            
             Offerte o = tuincentrumManager.GeefOfferte(int.Parse(IdTextBox.Text));
             if (o != null)
             {
-                OfferteDetailsWindow odw = new OfferteDetailsWindow(o, tuincentrumManager.GeefKlant(o.KlantNummer));
+                OfferteDetailsWindow odw = new OfferteDetailsWindow(o);
                 odw.Show();
             }
             else

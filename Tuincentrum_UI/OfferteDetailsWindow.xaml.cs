@@ -24,21 +24,28 @@ namespace Tuincentrum_UI
     /// </summary>
     public partial class OfferteDetailsWindow : Window
     {
-        private Klant Klant;
-
-        public OfferteDetailsWindow(Offerte offerte, Klant klant)
+        private Offerte offerte;
+        public OfferteDetailsWindow(Offerte o)
         {
             InitializeComponent();
+            offerte = o;
             OfferteTextBlock.Text += offerte.Datum.ToString("dd/MM/yyyy");
-            OfferteDetailsListBox.ItemsSource = offerte.producten.Select(p => p.ToonProductEnAantal());
-            KlantTextBlock.Text += klant.ToString();
-            
-            Klant = klant;
+            KlantTextBlock.Text += offerte.Klant.ToString();
+            offerte.RekenAf();
+            PrijsTextBlock.Text += offerte.Prijs.ToString();
+
+            foreach (var p in offerte.Producten)
+            {
+                OfferteDetailsListBox.Items.Add(new ListBoxItem
+                {
+                    Content = $"x{p.Value}, {p.Key}"
+                });
+            }
         }
 
         private void NieuweOfferteButtonClick(object sender, RoutedEventArgs e)
         {
-            NieuweOfferteWindow no = new NieuweOfferteWindow(Klant);
+            NieuweOfferteWindow no = new NieuweOfferteWindow(offerte.Klant);
             no.Show();
         }
 

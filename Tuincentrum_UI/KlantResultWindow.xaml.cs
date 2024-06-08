@@ -1,7 +1,6 @@
 ﻿using BL.Interfaces;
 using BL.Managers;
 using BL.Models;
-using BL.Models.DTOS;
 using DL_Data;
 using System;
 using System.Collections.Generic;
@@ -47,8 +46,8 @@ namespace Tuincentrum_UI
 
         private void OfferteDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            OfferteInfo offerteInfo = (OfferteInfo)OffertesListBox.SelectedItem;
-            OfferteDetailsWindow ofdw = new OfferteDetailsWindow(tuincentrumManager.GeefOfferte(offerteInfo.Id), klant);
+            Offerte offerteInfo = (Offerte)OffertesListBox.SelectedItem;
+            OfferteDetailsWindow ofdw = new OfferteDetailsWindow(tuincentrumManager.GeefOfferte(offerteInfo.Id.Value));
             ofdw.ShowDialog();
         }
 
