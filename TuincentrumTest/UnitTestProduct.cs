@@ -11,24 +11,27 @@ namespace TuincentrumTest
 {
     public class UnitTestProduct
     {
-        [Fact]
-        public void Product_Valid()
+        private Product product;
+
+        public UnitTestProduct()
         {
-            Product p = new("Plantje", "P", 4.5, "20cm Plantje");
-            Assert.Equal("Plantje", p.Naam_nl);
-            Assert.Equal("P", p.Naam_W);
-            Assert.Equal(4.5, p.Prijs);
-            Assert.Equal("20cm Plantje", p.Beschrijving);
+            product = new Product("Plantje", "Plant", 100, "Heel duur");
         }
 
-        [Theory]
-        [InlineData(" ")]
-        [InlineData("\n")]
-        [InlineData("")]
-        public void Product_InValid(string naam)
+        [Fact]
+        public void Ctor_Valid()
         {
-            Assert.Throws<TuincentrumException>(() => new Product(naam, "P", 4.5, "Beschrijving"));
-            Assert.Throws<TuincentrumException>(() => new Product("Plantje", naam, 4.5, "Beschrijving"));
+            Assert.Equal("Plantje", product.Naam_nl);
+            Assert.Equal("Plant", product.Naam_W);
+            Assert.Equal(100, product.Prijs);
+            Assert.Equal("Heel duur", product.Beschrijving);
+        }
+
+        [Fact]
+        public void Ctor_InValid()
+        {
+            Assert.Throws<TuincentrumException>(() => product.Naam_nl = "");
+            Assert.Throws<TuincentrumException>(() => product.Naam_W = "");
         }
     }
 }

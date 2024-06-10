@@ -12,30 +12,28 @@ namespace TuincentrumTest
 {
     public class UnitTestKlant
     {
+        private Klant klant;
+        public UnitTestKlant()
+        {
+            klant = new Klant("Lina", "Bijlokehof 5");
+        }
+
         [Fact]
-        public void Klant_Valid()
+        public void Ctor_Valid()
         {
-            Klant klant = new("Lina", "Bijlokevest 4");
             Assert.Equal("Lina", klant.Naam);
-            Assert.Equal("Bijlokevest 4", klant.Adres);
+            Assert.Equal("Bijlokehof 5", klant.Adres);
         }
 
         [Theory]
+        [InlineData(null)]
         [InlineData("")]
+        [InlineData("\n")]
         [InlineData(" ")]
-        [InlineData(" \n")]
-        public void KlantNaam_InValid(string naam)
+        public void Ctor_InValid(string text)
         {
-            Assert.Throws<TuincentrumException>(() => new Klant(naam, "Bijlokevest 4"));
-        }
-
-        [Theory]
-        [InlineData("")]
-        [InlineData(" ")]
-        [InlineData(" \n")]
-        public void KlantAdres_InValid(string adres)
-        {
-            Assert.Throws<TuincentrumException>(() => new Klant("Lina", adres));
+            Assert.Throws<TuincentrumException>(() => klant.Naam = text);
+            Assert.Throws<TuincentrumException>(() => klant.Adres = text);
         }
     }
 }

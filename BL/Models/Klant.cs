@@ -17,7 +17,7 @@ namespace BL.Models
         
         public string Naam { 
             get { return naam; } 
-            private set { 
+            set { 
                 if (string.IsNullOrWhiteSpace(value))
                     throw new TuincentrumException($"Klant naam is leeg"); 
                 naam = value;
@@ -29,7 +29,7 @@ namespace BL.Models
         public string Adres
         {
             get { return adres; }
-            private set
+            set
             {
                 if (string.IsNullOrWhiteSpace(value))
                     throw new TuincentrumException($"Klant naam is leeg");

@@ -30,6 +30,7 @@ namespace BL.Models
                 {
                     klant = value;
                 }
+                else throw new TuincentrumException("Klant is fout");
             }
         }
 
@@ -69,6 +70,8 @@ namespace BL.Models
             {
                 producten.Add(product, aantal);
             }
+
+            AantalProducten = BerekenTotaleAantalProducten();
         }
 
         public void VerwijderProduct(Product product, int aantal)
@@ -79,6 +82,8 @@ namespace BL.Models
                 || (producten[product] < aantal)) throw new TuincentrumException("VerwijderProduct");
             if (producten[product] == aantal) producten.Remove(product);
             else producten[product] -= aantal;
+
+            AantalProducten = BerekenTotaleAantalProducten();
         }
 
         public void RekenAf()
